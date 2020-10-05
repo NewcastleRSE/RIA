@@ -1,0 +1,552 @@
+*title* RIA: Regional IBD Analysis */title*
+*stylefile* riastyles.css */stylefile*
+*logo* rialogo.png */logo*
+*logowidth* 200 */logowidth*
+
+*webpage*
+
+*webpage-name* index */webpage-name*
+
+*webpage-title* Home */webpage-title*
+
+<h1>Welcome to the webpage of RIA!</h1>
+
+<h2>Documentation</h2>
+
+* Documentation for RIA is taken from these web pages and may be downloaded from here: <a href="ria.pdf">ria.pdf</a>. *
+
+<h2>Executables</h2>
+
+*tablel*
+*tr* Platform & File */tr*
+*tr* *html* Linux (x86_64) */html* *tex* Linux (x86\_64) */tex* & *html* <a href="ria-v1.00-linux-x86_64.zip">ria-v1.00-linux-x86_64.zip</a> */html* *tex* ria-v1.00-linux-x86\_64.zip */tex* */tr*
+*tr* *html* Linux (x86_32) */html* *tex* Linux (x86\_32) */tex* & *html* <a href="ria-v1.00-linux-x86_32.zip">ria-v1.00-linux-x86_32.zip</a> */html* *tex* ria-v1.00-linux-x86\_32.zip */tex* */tr*
+*tr* *html* Windows (x86_64) */html* *tex* Windows (x86\_64) */tex* & *html* <a  href="ria-v1.00-windows-x86_64.zip">ria-v1.00-windows-x86_64.zip</a> */html* *tex* ria-v1.00-windows-x86\_64.zip */tex* */tr*
+*tr* *html* Windows (x86_32) */html* *tex* Windows (x86\_32) */tex* & *html* <a  href="ria-v1.00-windows-x86_32.zip">ria-v1.00-windows-x86_32.zip</a> */html* *tex* ria-v1.00-windows-x86\_32.zip */tex* */tr*
+*/tablel*
+
+<h2>Source Code</h2>
+
+* Source code for RIA (C/C++) may be downloaded from here: <a href="ria-v1.00-code.zip">ria-v1.00-code.zip</a>. *
+
+<h2>Contact</h2>
+
+ * Please contact <a href="http://www.staff.ncl.ac.uk/richard.howey/">Richard Howey</a> with any queries about using the code and <a href="http://www.staff.ncl.ac.uk/heather.cordell/">Heather Cordell</a> with any queries about the methodology of RIA.
+  *
+
+*  Any work using RIA should reference the paper by *cite* nat:15 */cite*, and can be referenced in latex with the following bibtex entry:  *
+
+<h2>Citation</h2>
+
+*codeexample*
+@Article{Eu-Ahsunthornwattana:15,
+author={Eu-Ahsunthornwattana, J and Howey, R and Cordell, H J},
+title={{Regional IBD Analysis}},
+journal={TBA},
+year=2015
+}
+*/codeexample*
+
+*
+Copyright, 2015-2018 Richard Howey, GNU General Public License, version 3.
+*
+
+*/webpage*
+
+***************************************
+
+*section*
+
+*section-name* introduction */section-name*
+
+*section-title* Introduction */section-title*
+
+*
+The program RIA is a C++ implementation of the method described in *cite* nat:15 */cite* and uses calls to programs *html* <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">PLINK</a> and <a href="http://people.virginia.edu/~wc9c/KING/">KING</a>. */html* *tex* PLINK and KING. */tex*
+*
+
+*************************************************
+
+
+*subsection*
+
+*subsection-name*
+overview
+*/subsection-name*
+
+*subsection-title*
+Overview
+*/subsection-title*
+
+*
+The program RIA performs the following steps calling external PLINK and KING where required:
+*
+
+*numlist*
+
+*item*
+The first stage of RIA is the estimation of the IBD sharing probabilities between affected family members using a selection of SNPs across all available SNPs in the data, these probabilities form the *i* priors */i*. The program PLINK *cite* purcell:etal:07 */cite* is used to prune the SNPs to give a representative selection of SNPs using only cases which are then used to estimate the IBD sharing probabilities using KING *cite* manichaikul:etal:10 */cite*.
+
+
+*item*
+The next stage is to step across the genome, set to a default of 50 SNPs per step, and form a SNP window of around 500 to 2000 SNPs and use these SNPs to estimate the IBD sharing probabilities between affected family members using KING. These probabilities give the *i* posteriors */i*.
+
+*item*
+The next step is to perform a non-parametric linkage analysis comparing the prior and posterior IBD sharing probabilities using the method as described in *cite* cordell:etal:00 */cite* with minor modifications as described in *cite* nat:15 */cite*. This produces a LOD score for each analysed SNP region together with parameter estimates for the (scaled) additive and dominance variances.
+
+*/numlist*
+
+
+*
+For full details of the methodology of RIA please see the accompanying paper *cite* nat:15 */cite*.
+*
+
+*/subsection*
+
+
+
+*********************************************************************
+
+*/section*
+
+***************************
+***************************************
+
+*section*
+
+*section-name* installation */section-name*
+
+*section-title* Installation */section-title*
+
+*
+Download an executable file from the *html* <a href="index.html">home</a>&nbsp; */html* *tex* home~ */tex* page for your system and off you go, or do the following.
+*
+
+*numlist*
+
+*item* Download the code from the home page.
+
+*item* Compile it by typing something like the following:
+
+*codeexample*
+g++ -O3 *.cpp -o ria
+*/codeexample*
+
+*item* It is also necessary to having working copies of the programs *html* <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">PLINK</a>&nbsp; */html* *tex* PLINK~ */tex* and *html* <a href="http://people.virginia.edu/~wc9c/KING/">KING</a>&nbsp; */html* *tex* KING~ */tex* installed.
+
+*item* Start analysing your data with RIA!
+
+*item* If you are using Windows then you will need to uncomment the line below in the *code* main.h */code* file:
+
+*codeexample*
+#define USING_WINDOWS
+*/codeexample*
+
+*/numlist*
+
+*/section*
+
+***************************
+
+*section*
+
+*section-name*
+using
+*/section-name*
+
+*section-title*
+Using RIA
+*/section-title*
+
+*
+The program RIA takes a PLINK binary file as input (.bed/.bim/.fam) and produces a results file of the analysis. Basic usage of the program is given by typing:
+*
+
+*codeexample*
+./ria -i mydata.bed
+*/codeexample*
+
+*
+The most likely options that will need to be used are how to run the programs PLINK and KING:
+*
+
+*codeexample*
+./ria -plink /home/me/my-programs/plink/plink -king /home/me/my-programs/king/king -i mydata.bed
+*/codeexample*
+
+*
+Typing *code* ria */code* with no options will output usage details:
+*
+
+*codeexample*
+RIA: Regional IBD Analysis, v1.00
+------------------------------------------------------------
+Copyright 2015-2018 Richard Howey, GNU General Public License, v3
+Institute of Genetic Medicine, Newcastle University
+
+Usage:
+  ./ria [options] -i pedigree.bed
+ or ./ria -pf parameterfile [pedigree.bed]
+
+Options:
+  -window-size-cm n     -- set window size to n centimorgans
+  -window-min-snps m    -- set required minimium number of SNPs in a window to m
+  -step-size s          -- step size of windows, s
+  -start-snp a          -- start analysis from SNP number a
+  -end-snp b            -- end analysis at SNP number b
+  -start-snp-name x     -- start analysis from SNP name x
+  -end-snp-name y       -- end analysis at SNP name y
+  -job d t              -- job number d of t
+  -i file.bed           -- input binary pedigree file, file.bed
+  -o results.dat        -- output results file, results.dat
+  -i-prior file         -- input prior IBDs, file
+  -o-prior file         -- output prior IBDs, file
+  -prior-only           -- calculate prior IBDs only
+  -plink command        -- command used to run PLINK
+  -plink-options "ops"  -- PLINK pruning options used to calculate the prior
+  -king command         -- command used to run KING
+  -log results.log      -- log filename, results.log
+  -ndv                  -- no dominance variance
+  -so                   -- suppress output to screen
+
+Default Options in Effect:
+  -window-size-cM 5
+  -window-min-snps 100
+  -step-size 50
+  -plink plink
+  -king king
+  -o riaResults.dat
+*/codeexample*
+
+*
+See *ref* example */ref* for an example of how to use RIA to analyse some data.
+*
+*************
+
+*subsection*
+
+*subsection-name* parameterfile */subsection-name*
+
+*subsection-title* Parameter file */subsection-title*
+
+* A parameter file, *code* .pf */code*, may be used with RIA instead of writing all of the options on the command line. To use a parameter file simply type: *
+
+*codeexample*
+./ria -pf myparameters.pf
+*/codeexample*
+
+* The parameter file should be a text file with one option written on each line. For example, to perform the analysis above the file *code* myparameters.pf */code* would be as follows: *
+
+*codeexample*
+-plink /home/me/my-programs/plink/plink
+-king /home/me/my-programs/king/king mydata.bed
+-window-size-cm 5
+-step-size 50
+-i mydata.bed
+-o myResults.dat
+*/codeexample*
+
+* It is also possible to add comments to the file provided that the *q*-*/q* character is not used, and to comment out any options by placing another character in front of any *q*-*/q*. For example, the above parameter file could be edited as follows: *
+
+
+*codeexample*
+# Command used to run PLINK
+-plink /home/me/my-programs/plink/plink
+
+# Command used to run KING
+-king /home/me/my-programs/king/king
+
+# SNP window size
+-window-size-cm 5
+
+# Number of SNPs to move to the next SNP window
+-step-size 50
+
+# The all important data to analyse
+-i mydata.bed
+
+# My lovely analysis results
+-o myResults.dat
+
+# I might try this later
+#-i myOtherData.bed
+*/codeexample*
+
+*/subsection*
+
+*************
+*************
+
+*subsection*
+
+*subsection-name* temporary */subsection-name*
+
+*subsection-title* Temporary Files */subsection-title*
+
+
+*
+RIA requires the use of two other programs, PLINK and KING, and in order to use these programs several temporary files must be created. All of these files begin with *q* tempRIA */q* and, before the file extension, end with the process ID of the current RIA job. They will typically appear similar to the following:
+*
+*codeexample*
+tempRIA-priors1-57703.prune.in
+tempRIA-priors2-57703.bed
+tempRIA-priors2-57703.bim
+tempRIA-priors2-57703.fam
+tempRIA-priors2-57703.kin
+tempRIA-post-57703.fam
+tempRIA-posterior-57703.bed
+tempRIA-posterior-57703.bim
+tempRIA-posterior-57703.fam
+tempRIA-posterior-57703.kin
+*/codeexample*
+ 
+*
+The use of the process ID ensures that several RIA jobs may be ran in the same location without any issues of interference. All of these temporary files should be deleted by RIA when they are no longer needed, however if RIA is forced to unexpectedly stop for some reason then these files may still be lying around. In which case, they should be carefully deleted if necessary.
+*
+
+*/subsection*
+
+*************
+
+*/section*
+
+************************************
+********************************
+*section*
+
+*section-name*
+example
+*/section-name*
+
+*section-title*
+RIA Example
+*/section-title*
+
+*
+This section runs through an example analysis using RIA with example data which can be download from *html* <a href="exampleRIAData.zip">here</a>. */html* *tex* here. */tex* This data was simulated using HAPMAP3 data to mate individuals who already had children to create 301 affected relative pairs (ARPs). The data only contains SNPs from chromosome 6, however in a real analysis we would ideally have data for the whole genome to get better estimates of the prior IBD sharing probabilities and to compare LOD scores across the genome.
+*
+
+*
+We already have PLINK installed on our system so we will not bother ourselves to download it from *html* <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">here</a>,&nbsp; */html* *tex* here,~ */tex* nor will we use the *code* -plink */code* option as it is already set up to run by typing *q* plink */q*, which is set by default. The KING program on the other hand is not installed, so we shall download it from *html* <a href="http://people.virginia.edu/~wc9c/KING/">here</a>,&nbsp; */html* *tex* here,~ */tex* and save the executable file at location *code* /home/me/my-programs/king/ */code* so that KING may be ran by typing *code* /home/me/my-programs/king/king */code*.
+*
+
+*
+We can now run a Regional IBD Analysis (RIA) analyses using the default options for the SNP window size, set to 5 cM, and the SNP window step size, set to 50, by typing:
+*
+
+*codeexample*
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample.dat
+*/codeexample*
+
+*
+This will create output similar to the following.
+*
+
+*codeexample*
+RIA: Regional IBD Analysis, v2.00
+------------------------------------------------------------
+Copyright 2015-2018 Richard Howey, GNU General Public License, v3
+Institute of Genetic Medicine, Newcastle University
+
+Parameters:
+Input file: demo-data/exampleRIAData.bed
+Output file: resultsRIAExample.dat
+Log file: resultsRIAExample.log
+Using additive and dominance variance model
+Start at first SNP with full SNP window
+End at last SNP with full SNP window
+Window size: 5 cM
+Minimum number of SNPs in a window: 100
+SNP step size: 50 SNPs
+Number of cases: 362
+Number of unused controls: 35
+Number of SNPs: 29413
+
+Creating list of pruned SNPs using PLINK command:
+plink --noweb --indep 50 50 2 --mind 0.01 --maf 0.25 --geno 0.05 --bfile exampleRIAData --out tempRIA-priors1-8553 >/dev/null 2>&1
+
+Creating data file to calculate priors using PLINK command:
+plink --noweb --bfile exampleRIAData --filter-cases --extract tempRIA-priors1-8553.prune.in --make-bed --out tempRIA-priors2-8553 >/dev/null 2>&1
+
+Calculating priors using KING command:
+/home/me/my-programs/king/king -b tempRIA-priors2-8553.bed --homo --prefix tempRIA-priors2-8553 >/dev/null 2>&1
+
+Number of affected relative pairs (ARPs) in priors: 301
+
+Calculating posteriors (for each SNP window) using KING command:
+/home/me/my-programs/king/king -b tempRIA-posterior-8553.bed --homo --prefix tempRIA-posterior-8553 >/dev/null 2>&1
+
+
+5 cM windows - number of SNPs summary statistics:
+Mean: 850.036
+Standard deviation: 343.753
+Range: (355, 2058)
+
+
+Run time: 4 minutes and 16 seconds
+*/codeexample*
+
+*
+The commands used by PLINK and KING are output for reference and may be useful if there are any problems. RIA uses several intermediate temporary files beginning with *q* tempRIA */q* and may be lying around if there was a problem and RIA was forced to unexpectedly stop. They should then be carefully deleted if necessary.
+*
+
+*
+The results file *code* resultsRIAExample.dat */code* should look as follows:
+*
+
+*codeexample*
+SNP CHR ID BP VAR_A VAR_D MLS
+248 6 rs1331481 994348 2.023757958 0 4.344757624
+298 6 rs6932005 1123561 1.973952102 0 4.225114439
+348 6 rs7739254 1279448 1.984412731 0 4.110303207
+398 6 rs4443540 1450510 1.917276107 0 4.03466902
+448 6 rs2814819 1634517 1.790252968 0 3.732580781
+...
+28898 6 rs9346656 156739373 1.239363365 0 2.824647162
+28948 6 rs1871428 157326847 1.103212627 0 2.409229619
+28998 6 rs17551813 158113713 1.053427084 0 2.317373501
+29048 6 rs9455695 158688454 1.045051187 0 2.329231332
+29098 6 rs9346489 159237500 1.04876469 0.009156993548 2.378724765
+*/codeexample*
+
+*
+The columns for the results file are as follows:
+*
+
+*tablel*
+*tr* Column & Description */tr*
+*tr* SNP & The SNP number as it appears in file. */tr*
+*tr* CHR & Chromosome of the SNP. */tr*
+*tr* ID & The name of the SNP. */tr*
+*tr* BP & The base pair position of the SNP. */tr*
+*tr* *html* VAR_A */html* *tex* VAR\_A */tex* & The additive variance parameter. */tr*
+*tr* *html* VAR_D */html* *tex* VAR\_D */tex* & The dominance variance parameter. */tr*
+*tr* MLS & The maximum-likelihood statistic. */tr*
+*/tablel*
+
+*
+It is not unusual for either *html* VAR_A&nbsp; */html* *tex* VAR\_A~ */tex* or *html* VAR_D&nbsp; */html* *tex* VAR\_D~ */tex* or even both of these parameters to be equal to 0. In the example data set *html* VAR_D&nbsp; */html* *tex* VAR\_D~ */tex* is equal to 0 for most of the SNPs.
+*
+
+*
+In R type:
+*
+
+*codeexample*
+resultsRIAExample<-read.table("resultsRIAExample.dat", header=TRUE)
+
+plot(resultsRIAExample$BP/10^6, resultsRIAExample$MLS, main="Regional IBD Analysis", xlab=expression(bp~position~(Mb)), ylab="MLS", ylim=c(0, max(resultsRIAExample$MLS)))
+*/codeexample*
+
+*
+This will produce the following plot:
+*
+
+*figure*
+exampleRIA.png
+
+*caption*
+Plot of RIA test results.
+*/caption*
+*label* example-fig */label*
+*width* 800 */width*
+*widthtex* 400 */widthtex*
+*/figure*
+
+*
+As the prior IBD sharing probabilities are always the same, regardless of which subset of SNPs are analysed, it is possible to save a prior file using the *code* -o-prior */code* option as follows
+*
+
+*codeexample*
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample.dat -o-prior examplePrior.dat
+*/codeexample*
+
+*
+or can be done without any further analysis using the *code* -prior-only */code* option as follows
+*
+
+*codeexample*
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -prior-only -o-prior examplePrior.dat
+*/codeexample*
+
+*
+The prior can then be used for different analysis using the *code* -i-prior */code* option, such as
+*
+
+*codeexample*
+./ria -window-size 2000 -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample-2000.dat -i-prior examplePrior.dat
+*/codeexample*
+
+*
+There are no simulated effects in the example data, which would be clearer if results for the whole genome were available. For details on how to interpret results please see *cite* nat:15 */cite*.
+*
+
+*************
+
+*subsection*
+
+*subsection-name* parallel */subsection-name*
+
+*subsection-title* Parallel processing */subsection-title*
+
+*
+Regional IBD Analysis is fairly computationally intensive and so it is natural to want to speed things up a bit by using parallel processing. This can be done by dividing the analysis up using the *code* -start-snp */code* and *code* -end-snp */code* options, such as
+*
+
+
+*codeexample*
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample1.dat -i-prior examplePrior.dat -start-snp 3000 -end-snp 4000
+*/codeexample*
+
+*
+Care must be taken when setting the first SNP to ensure there is a full SNP window around the SNP at the center of the SNP window.
+*
+
+*
+If all of the data is to be analysed it is much easy to use the *code* -job */code* option to divide the analysis into a number of analyses. This will automatically set the start and end SNPs. For example, to analyse all of the data in 10 jobs using the previously calculated priors, use
+*
+
+*codeexample*
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results1.dat -i-prior examplePrior.dat -job 1 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results2.dat -i-prior examplePrior.dat -job 2 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results3.dat -i-prior examplePrior.dat -job 3 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results4.dat -i-prior examplePrior.dat -job 4 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results5.dat -i-prior examplePrior.dat -job 5 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results6.dat -i-prior examplePrior.dat -job 6 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results7.dat -i-prior examplePrior.dat -job 7 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results8.dat -i-prior examplePrior.dat -job 8 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results9.dat -i-prior examplePrior.dat -job 9 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results10.dat -i-prior examplePrior.dat -job 10 10
+*/codeexample*
+
+*
+The temporary intermediate files used by RIA depend on the process ID of each job so there is no need to worry about these files interfering with one another.  
+Only the first results file will contain the header making it easy to combine the results into one results file:
+*
+
+
+*codeexample*
+cat results1.dat results2.dat results3.dat results4.dat results5.dat results6.dat results7.dat results8.dat results9.dat results10.dat > allResults.dat
+*/codeexample*
+
+*
+The *code* -job */code* option makes it easy to write a simple script with a loop to submit the jobs. Alternatively, if you are using a High Performance Computing (HPC) cluster using the open-source Sun Grid Engine (SGE) scheduler software, then these jobs may be submitted as an array job using something similar to the following script:
+*
+
+*codeexample*
+#!/bin/bash
+# execute in current working directory
+#$ -cwd
+# export local envirnoment
+#$ -V
+# the number of RIA tasks
+#$ -t 1-10
+# execute RIA for each task
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results$SGE_TASK_ID.dat -i-prior examplePrior.dat -job $SGE_TASK_ID 10
+*/codeexample*
+
+*/subsection*
+
+*************
+
+*/section*

@@ -1,0 +1,5 @@
+@Misc{mapthin,
+author={Howey, R and Cordell, H J},
+title={MapThin},
+note={{http://www.staff.ncl.ac.uk/richard.howey/mapthin/}}
+}

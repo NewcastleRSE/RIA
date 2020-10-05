@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>RIA: Regional IBD Analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" type="text/css" href="riastyles.css" />
+<link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body>
+<!-- Begin Wrapper -->
+<div id="wrapper">
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>
+<!-- Begin Header -->
+<div id="header">
+<table><tr>
+<td>
+<img width="200" src="rialogo.png" alt="RIA: Regional IBD Analysis"/>
+</td>
+<td>
+<p style="margin-left: 1em;">RIA: Regional IBD Analysis</p>
+</td></tr>
+</table>
+</div>
+<!-- End Header -->
+<!-- Begin Menu Navigation -->
+<ul id="menunav">
+<li><a href="index.html">Home</a></li>
+</ul>
+<!-- End Menu Navigation -->
+
+</td></tr>
+<tr><td>
+<table border="0" cellpadding="0" cellspacing="0"><tr>
+<td valign="top">
+<!-- Begin Left Column -->
+<div id="leftcolumn">
+<!-- Begin Contents Navigation -->
+<div id="navcontainer">
+<ul>
+<li><a href="introduction.html">1 Introduction</a>
+<ul>
+<li><a href="introduction.html#overview">1.1 Overview</a></li>
+</ul>
+</li>
+<li><a href="installation.html">2 Installation</a>
+</li>
+<li><a href="using.html">3 Using RIA</a>
+<ul>
+<li><a href="using.html#parameterfile">3.1 Parameter file</a></li>
+<li><a href="using.html#temporary">3.2 Temporary Files</a></li>
+</ul>
+</li>
+<li><a href="example.html">4 RIA Example</a>
+<ul>
+<li><a href="example.html#parallel">4.1 Parallel processing</a></li>
+</ul>
+</li>
+<li><a href="references.html">References</a></li>
+</ul>
+</div>
+<!-- End Contents Navigation -->
+</div>
+<!-- End Left Column -->
+</td>
+<td valign="top">
+<!-- Begin Right Column -->
+<div id="rightcolumn">
+<h1>3 Using RIA</h1>
+<p>
+The program RIA takes a PLINK binary file as input (.bed/.bim/.fam) and produces a results file of the analysis. Basic usage of the program is given by typing: </p>
+<pre>
+./ria -i mydata.bed
+</pre>
+<p>
+The most likely options that will need to be used are how to run the programs PLINK and KING: </p>
+<pre>
+./ria -plink /home/me/my-programs/plink/plink -king /home/me/my-programs/king/king -i mydata.bed
+</pre>
+<p>
+Typing <tt>ria</tt> with no options will output usage details: </p>
+<pre>
+RIA: Regional IBD Analysis, v1.00
+------------------------------------------------------------
+Copyright 2015-2018 Richard Howey, GNU General Public License, v3
+Institute of Genetic Medicine, Newcastle University
+
+Usage:
+  ./ria [options] -i pedigree.bed
+ or ./ria -pf parameterfile [pedigree.bed]
+
+Options:
+  -window-size-cm n     -- set window size to n centimorgans
+  -window-min-snps m    -- set required minimium number of SNPs in a window to m
+  -step-size s          -- step size of windows, s
+  -start-snp a          -- start analysis from SNP number a
+  -end-snp b            -- end analysis at SNP number b
+  -start-snp-name x     -- start analysis from SNP name x
+  -end-snp-name y       -- end analysis at SNP name y
+  -job d t              -- job number d of t
+  -i file.bed           -- input binary pedigree file, file.bed
+  -o results.dat        -- output results file, results.dat
+  -i-prior file         -- input prior IBDs, file
+  -o-prior file         -- output prior IBDs, file
+  -prior-only           -- calculate prior IBDs only
+  -plink command        -- command used to run PLINK
+  -plink-options "ops"  -- PLINK pruning options used to calculate the prior
+  -king command         -- command used to run KING
+  -log results.log      -- log filename, results.log
+  -ndv                  -- no dominance variance
+  -so                   -- suppress output to screen
+
+Default Options in Effect:
+  -window-size-cM 5
+  -window-min-snps 100
+  -step-size 50
+  -plink plink
+  -king king
+  -o riaResults.dat
+</pre>
+<p>
+See <a href="example.html">section 4</a> for an example of how to use RIA to analyse some data. </p>
+<h2><a name="parameterfile">3.1 Parameter file</a></h2>
+<p>
+A parameter file, <tt>.pf</tt>, may be used with RIA instead of writing all of the options on the command line. To use a parameter file simply type: </p>
+<pre>
+./ria -pf myparameters.pf
+</pre>
+<p>
+The parameter file should be a text file with one option written on each line. For example, to perform the analysis above the file <tt>myparameters.pf</tt> would be as follows: </p>
+<pre>
+-plink /home/me/my-programs/plink/plink
+-king /home/me/my-programs/king/king mydata.bed
+-window-size-cm 5
+-step-size 50
+-i mydata.bed
+-o myResults.dat
+</pre>
+<p>
+It is also possible to add comments to the file provided that the &ldquo;-&rdquo; character is not used, and to comment out any options by placing another character in front of any &ldquo;-&rdquo;. For example, the above parameter file could be edited as follows: </p>
+<pre>
+# Command used to run PLINK
+-plink /home/me/my-programs/plink/plink
+
+# Command used to run KING
+-king /home/me/my-programs/king/king
+
+# SNP window size
+-window-size-cm 5
+
+# Number of SNPs to move to the next SNP window
+-step-size 50
+
+# The all important data to analyse
+-i mydata.bed
+
+# My lovely analysis results
+-o myResults.dat
+
+# I might try this later
+#-i myOtherData.bed
+</pre>
+<h2><a name="temporary">3.2 Temporary Files</a></h2>
+<p>
+RIA requires the use of two other programs, PLINK and KING, and in order to use these programs several temporary files must be created. All of these files begin with &ldquo;tempRIA&rdquo; and, before the file extension, end with the process ID of the current RIA job. They will typically appear similar to the following: </p>
+<pre>
+tempRIA-priors1-57703.prune.in
+tempRIA-priors2-57703.bed
+tempRIA-priors2-57703.bim
+tempRIA-priors2-57703.fam
+tempRIA-priors2-57703.kin
+tempRIA-post-57703.fam
+tempRIA-posterior-57703.bed
+tempRIA-posterior-57703.bim
+tempRIA-posterior-57703.fam
+tempRIA-posterior-57703.kin
+</pre>
+<p>
+The use of the process ID ensures that several RIA jobs may be ran in the same location without any issues of interference. All of these temporary files should be deleted by RIA when they are no longer needed, however if RIA is forced to unexpectedly stop for some reason then these files may still be lying around. In which case, they should be carefully deleted if necessary. </p>
+<br />
+<div class="prevnext"><span class="left"><a href="installation.html">&lt;-prev</a>
+</span><span class="right"><a href="example.html">next-&gt;</a>
+</span></div><!-- End Right Column -->
+</div>
+</td>
+</tr></table>
+<!-- End Wrapper -->
+</td></tr></table>
+</div>
+ <!-- Start of StatCounter Code for Default Guide --> <script type="text/javascript"> var sc_project=10706335; var sc_invisible=1; var sc_security="5ac36f97"; var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www."); document.write("<sc"+"ript type='text/javascript' src='" + scJsHost+ "statcounter.com/counter/counter.js'></"+"script>"); </script> <noscript><div class="statcounter"><a title="shopify traffic stats" href="http://statcounter.com/shopify/" target="_blank"><img class="statcounter" src="http://c.statcounter.com/10706335/0/5ac36f97/1/" alt="shopify traffic stats"></a></div></noscript> <!-- End of StatCounter Code for Default Guide --></body>
+</html>

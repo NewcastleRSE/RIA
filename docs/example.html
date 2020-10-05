@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>RIA: Regional IBD Analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" type="text/css" href="riastyles.css" />
+<link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body>
+<!-- Begin Wrapper -->
+<div id="wrapper">
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>
+<!-- Begin Header -->
+<div id="header">
+<table><tr>
+<td>
+<img width="200" src="rialogo.png" alt="RIA: Regional IBD Analysis"/>
+</td>
+<td>
+<p style="margin-left: 1em;">RIA: Regional IBD Analysis</p>
+</td></tr>
+</table>
+</div>
+<!-- End Header -->
+<!-- Begin Menu Navigation -->
+<ul id="menunav">
+<li><a href="index.html">Home</a></li>
+</ul>
+<!-- End Menu Navigation -->
+
+</td></tr>
+<tr><td>
+<table border="0" cellpadding="0" cellspacing="0"><tr>
+<td valign="top">
+<!-- Begin Left Column -->
+<div id="leftcolumn">
+<!-- Begin Contents Navigation -->
+<div id="navcontainer">
+<ul>
+<li><a href="introduction.html">1 Introduction</a>
+<ul>
+<li><a href="introduction.html#overview">1.1 Overview</a></li>
+</ul>
+</li>
+<li><a href="installation.html">2 Installation</a>
+</li>
+<li><a href="using.html">3 Using RIA</a>
+<ul>
+<li><a href="using.html#parameterfile">3.1 Parameter file</a></li>
+<li><a href="using.html#temporary">3.2 Temporary Files</a></li>
+</ul>
+</li>
+<li><a href="example.html">4 RIA Example</a>
+<ul>
+<li><a href="example.html#parallel">4.1 Parallel processing</a></li>
+</ul>
+</li>
+<li><a href="references.html">References</a></li>
+</ul>
+</div>
+<!-- End Contents Navigation -->
+</div>
+<!-- End Left Column -->
+</td>
+<td valign="top">
+<!-- Begin Right Column -->
+<div id="rightcolumn">
+<h1>4 RIA Example</h1>
+<p>
+This section runs through an example analysis using RIA with example data which can be download from <a href="exampleRIAData.zip">here</a>.This data was simulated using HAPMAP3 data to mate individuals who already had children to create 301 affected relative pairs (ARPs). The data only contains SNPs from chromosome 6, however in a real analysis we would ideally have data for the whole genome to get better estimates of the prior IBD sharing probabilities and to compare LOD scores across the genome. </p>
+<p>
+We already have PLINK installed on our system so we will not bother ourselves to download it from <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">here</a>,&nbsp;nor will we use the <tt>-plink</tt> option as it is already set up to run by typing &ldquo;plink&rdquo;, which is set by default. The KING program on the other hand is not installed, so we shall download it from <a href="http://people.virginia.edu/~wc9c/KING/">here</a>,&nbsp;and save the executable file at location <tt>/home/me/my-programs/king/</tt> so that KING may be ran by typing <tt>/home/me/my-programs/king/king</tt>. </p>
+<p>
+We can now run a Regional IBD Analysis (RIA) analyses using the default options for the SNP window size, set to 5 cM, and the SNP window step size, set to 50, by typing: </p>
+<pre>
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample.dat
+</pre>
+<p>
+This will create output similar to the following. </p>
+<pre>
+RIA: Regional IBD Analysis, v2.00
+------------------------------------------------------------
+Copyright 2015-2018 Richard Howey, GNU General Public License, v3
+Institute of Genetic Medicine, Newcastle University
+
+Parameters:
+Input file: demo-data/exampleRIAData.bed
+Output file: resultsRIAExample.dat
+Log file: resultsRIAExample.log
+Using additive and dominance variance model
+Start at first SNP with full SNP window
+End at last SNP with full SNP window
+Window size: 5 cM
+Minimum number of SNPs in a window: 100
+SNP step size: 50 SNPs
+Number of cases: 362
+Number of unused controls: 35
+Number of SNPs: 29413
+
+Creating list of pruned SNPs using PLINK command:
+plink --noweb --indep 50 50 2 --mind 0.01 --maf 0.25 --geno 0.05 --bfile exampleRIAData --out tempRIA-priors1-8553 &gt;/dev/null 2&gt;&1
+
+Creating data file to calculate priors using PLINK command:
+plink --noweb --bfile exampleRIAData --filter-cases --extract tempRIA-priors1-8553.prune.in --make-bed --out tempRIA-priors2-8553 &gt;/dev/null 2&gt;&1
+
+Calculating priors using KING command:
+/home/me/my-programs/king/king -b tempRIA-priors2-8553.bed --homo --prefix tempRIA-priors2-8553 &gt;/dev/null 2&gt;&1
+
+Number of affected relative pairs (ARPs) in priors: 301
+
+Calculating posteriors (for each SNP window) using KING command:
+/home/me/my-programs/king/king -b tempRIA-posterior-8553.bed --homo --prefix tempRIA-posterior-8553 &gt;/dev/null 2&gt;&1
+
+
+5 cM windows - number of SNPs summary statistics:
+Mean: 850.036
+Standard deviation: 343.753
+Range: (355, 2058)
+
+
+Run time: 4 minutes and 16 seconds
+</pre>
+<p>
+The commands used by PLINK and KING are output for reference and may be useful if there are any problems. RIA uses several intermediate temporary files beginning with &ldquo;tempRIA&rdquo; and may be lying around if there was a problem and RIA was forced to unexpectedly stop. They should then be carefully deleted if necessary. </p>
+<p>
+The results file <tt>resultsRIAExample.dat</tt> should look as follows: </p>
+<pre>
+SNP CHR ID BP VAR_A VAR_D MLS
+248 6 rs1331481 994348 2.023757958 0 4.344757624
+298 6 rs6932005 1123561 1.973952102 0 4.225114439
+348 6 rs7739254 1279448 1.984412731 0 4.110303207
+398 6 rs4443540 1450510 1.917276107 0 4.03466902
+448 6 rs2814819 1634517 1.790252968 0 3.732580781
+...
+28898 6 rs9346656 156739373 1.239363365 0 2.824647162
+28948 6 rs1871428 157326847 1.103212627 0 2.409229619
+28998 6 rs17551813 158113713 1.053427084 0 2.317373501
+29048 6 rs9455695 158688454 1.045051187 0 2.329231332
+29098 6 rs9346489 159237500 1.04876469 0.009156993548 2.378724765
+</pre>
+<p>
+The columns for the results file are as follows: </p>
+<table id="tablestylel" class="center">
+<tr><th>Column </th><th>Description</th></tr>
+<tr class="alt"><td valign="top">SNP </td><td valign="top">The SNP number as it appears in file.</td></tr>
+<tr><td valign="top">CHR </td><td valign="top">Chromosome of the SNP.</td></tr>
+<tr class="alt"><td valign="top">ID </td><td valign="top">The name of the SNP.</td></tr>
+<tr><td valign="top">BP </td><td valign="top">The base pair position of the SNP.</td></tr>
+<tr class="alt"><td valign="top">VAR_A</td><td valign="top">The additive variance parameter.</td></tr>
+<tr><td valign="top">VAR_D</td><td valign="top">The dominance variance parameter.</td></tr>
+<tr class="alt"><td valign="top">MLS </td><td valign="top">The maximum-likelihood statistic.</td></tr>
+</table>
+<p>
+It is not unusual for either VAR_A&nbsp;or VAR_D&nbsp;or even both of these parameters to be equal to 0. In the example data set VAR_D&nbsp;is equal to 0 for most of the SNPs. </p>
+<p>
+In R type: </p>
+<pre>
+resultsRIAExample&lt;-read.table("resultsRIAExample.dat", header=TRUE)
+
+plot(resultsRIAExample$BP/10^6, resultsRIAExample$MLS, main="Regional IBD Analysis", xlab=expression(bp~position~(Mb)), ylab="MLS", ylim=c(0, max(resultsRIAExample$MLS)))
+</pre>
+<p>
+This will produce the following plot: </p>
+<div id="fig"><a href="exampleRIA.png"><img src="exampleRIA.png" border="0" class="figimg" width="800"></a><br />
+<br />
+Figure 1. Plot of RIA test results.
+</div>
+<p>
+As the prior IBD sharing probabilities are always the same, regardless of which subset of SNPs are analysed, it is possible to save a prior file using the <tt>-o-prior</tt> option as follows </p>
+<pre>
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample.dat -o-prior examplePrior.dat
+</pre>
+<p>
+or can be done without any further analysis using the <tt>-prior-only</tt> option as follows </p>
+<pre>
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -prior-only -o-prior examplePrior.dat
+</pre>
+<p>
+The prior can then be used for different analysis using the <tt>-i-prior</tt> option, such as </p>
+<pre>
+./ria -window-size 2000 -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample-2000.dat -i-prior examplePrior.dat
+</pre>
+<p>
+There are no simulated effects in the example data, which would be clearer if results for the whole genome were available. For details on how to interpret results please see <a href="references.html#nat:15">Eu-Ahsunthornwattana et al. (2015)</a>. </p>
+<h2><a name="parallel">4.1 Parallel processing</a></h2>
+<p>
+Regional IBD Analysis is fairly computationally intensive and so it is natural to want to speed things up a bit by using parallel processing. This can be done by dividing the analysis up using the <tt>-start-snp</tt> and <tt>-end-snp</tt> options, such as </p>
+<pre>
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample1.dat -i-prior examplePrior.dat -start-snp 3000 -end-snp 4000
+</pre>
+<p>
+Care must be taken when setting the first SNP to ensure there is a full SNP window around the SNP at the center of the SNP window. </p>
+<p>
+If all of the data is to be analysed it is much easy to use the <tt>-job</tt> option to divide the analysis into a number of analyses. This will automatically set the start and end SNPs. For example, to analyse all of the data in 10 jobs using the previously calculated priors, use </p>
+<pre>
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results1.dat -i-prior examplePrior.dat -job 1 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results2.dat -i-prior examplePrior.dat -job 2 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results3.dat -i-prior examplePrior.dat -job 3 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results4.dat -i-prior examplePrior.dat -job 4 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results5.dat -i-prior examplePrior.dat -job 5 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results6.dat -i-prior examplePrior.dat -job 6 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results7.dat -i-prior examplePrior.dat -job 7 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results8.dat -i-prior examplePrior.dat -job 8 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results9.dat -i-prior examplePrior.dat -job 9 10
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results10.dat -i-prior examplePrior.dat -job 10 10
+</pre>
+<p>
+The temporary intermediate files used by RIA depend on the process ID of each job so there is no need to worry about these files interfering with one another. Only the first results file will contain the header making it easy to combine the results into one results file: </p>
+<pre>
+cat results1.dat results2.dat results3.dat results4.dat results5.dat results6.dat results7.dat results8.dat results9.dat results10.dat &gt; allResults.dat
+</pre>
+<p>
+The <tt>-job</tt> option makes it easy to write a simple script with a loop to submit the jobs. Alternatively, if you are using a High Performance Computing (HPC) cluster using the open-source Sun Grid Engine (SGE) scheduler software, then these jobs may be submitted as an array job using something similar to the following script: </p>
+<pre>
+#!/bin/bash
+# execute in current working directory
+#$ -cwd
+# export local envirnoment
+#$ -V
+# the number of RIA tasks
+#$ -t 1-10
+# execute RIA for each task
+./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results$SGE_TASK_ID.dat -i-prior examplePrior.dat -job $SGE_TASK_ID 10
+</pre>
+<br />
+<div class="prevnext"><span class="left"><a href="using.html">&lt;-prev</a>
+</span></div><!-- End Right Column -->
+</div>
+</td>
+</tr></table>
+<!-- End Wrapper -->
+</td></tr></table>
+</div>
+ <!-- Start of StatCounter Code for Default Guide --> <script type="text/javascript"> var sc_project=10706335; var sc_invisible=1; var sc_security="5ac36f97"; var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www."); document.write("<sc"+"ript type='text/javascript' src='" + scJsHost+ "statcounter.com/counter/counter.js'></"+"script>"); </script> <noscript><div class="statcounter"><a title="shopify traffic stats" href="http://statcounter.com/shopify/" target="_blank"><img class="statcounter" src="http://c.statcounter.com/10706335/0/5ac36f97/1/" alt="shopify traffic stats"></a></div></noscript> <!-- End of StatCounter Code for Default Guide --></body>
+</html>

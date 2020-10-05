@@ -1,0 +1,7 @@
+pdflatex ria.tex
+
+bibtex ria
+
+pdflatex ria.tex
+
+pdflatex ria.tex
