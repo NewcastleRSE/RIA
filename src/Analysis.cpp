@@ -1,6 +1,6 @@
 /************************************************************************
- * RIA, version 1.00
- * Copyright 2015
+ * RIA, version 1.1
+ * Copyright 2015-2023
  * Richard Howey
  * Institute of Genetic Medicine, Newcastle University
  *
@@ -344,7 +344,7 @@ void Analysis::calculatePriors()
 	else if(doIbdStitch) { calculatePriorsIBDStitch(); return; };
 
 	//calculate the IBDs for the pruned data set in order to calculate the priors
-	string kingCommand = king + " -b " + outputPriorFilename2 + ".bed --homo --prefix " + outputPriorFilename2 + endCommand;
+	string kingCommand = king + " -b " + outputPriorFilename2 + ".bed --homog --prefix " + outputPriorFilename2 + endCommand;
 
 	out("Calculating priors using KING command:\n"); out(kingCommand); out("\n\n");
 
@@ -386,7 +386,7 @@ void Analysis::calculatePriors()
 	if(!priorOnly)
 	{
 		//just output the posterior command here once for convience, so is not outputted for every analysis SNP
-		kingCommand = king + " -b tempRIA-posterior-" + pidStr + ".bed --homo --prefix tempRIA-posterior-" + pidStr + endCommand;
+		kingCommand = king + " -b tempRIA-posterior-" + pidStr + ".bed --homog --prefix tempRIA-posterior-" + pidStr + endCommand;
 
 		out("Calculating posteriors (for each SNP window) using KING command:\n"); out(kingCommand); out("\n\n");
 	};
@@ -750,7 +750,7 @@ void Analysis::calculatePosteriors()
 	snpWindow->createFilesForPosteriorCalc(outputPostFilename);
 
 	//calculate the IBDs for the pruned data set in order to calculate the priors
-	string kingCommand = king + " -b " +  outputPostFilename + ".bed --homo --prefix " + outputPostFilename + endCommand;
+	string kingCommand = king + " -b " +  outputPostFilename + ".bed --homog --prefix " + outputPostFilename + endCommand;
 
 	unsigned int kingErrorCode = system(kingCommand.c_str());
 
@@ -1275,7 +1275,7 @@ void Analysis::setupPriorsUsingInputFile()
 	}
 	else
 	{
-		string kingCommand = king + " -b tempRIA-posterior-" + pidStr + ".bed --homo --prefix tempRIA-posterior-" + pidStr + endCommand;
+		string kingCommand = king + " -b tempRIA-posterior-" + pidStr + ".bed --homog --prefix tempRIA-posterior-" + pidStr + endCommand;
 		out("Calculating posteriors (for each SNP window) using KING command:\n"); out(kingCommand); out("\n\n");
 	};
 };

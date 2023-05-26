@@ -1,6 +1,6 @@
 /************************************************************************
- * RIA, version 1.00
- * Copyright 2015
+ * RIA, version 1.1
+ * Copyright 2015-2023
  * Richard Howey
  * Institute of Genetic Medicine, Newcastle University
  *
@@ -47,9 +47,9 @@ ofstream logFile;
 //! Output program title to screen
 void header()
 {
-	out("\nRIA: Regional IBD Analysis, v1.00\n");
+	out("\nRIA: Regional IBD Analysis, v1.1\n");
 	out("------------------------------------------------------------\n");
-	out("Copyright 2015 Richard Howey, GNU General Public License, v3\n");
+	out("Copyright 2015-2023 Richard Howey, GNU General Public License, v3\n");
 	out("Institute of Genetic Medicine, Newcastle University\n\n");
 };
 
@@ -80,9 +80,9 @@ void usage()
 		out("  -plink command         -- command used to run PLINK\n");
 		out("  -plink-options \"ops\"   -- PLINK pruning options used to calculate the prior\n");
 		out("  -king command          -- command used to run KING\n");
-		out("  -truffle command       -- command used to run Truffle instead of KING\n");
-		out("  -truffle-options \"ops\" -- truffle options, e.g. \"--cpu 16\"  \n");
-		out("  -gzip command          -- command used to run gzip, needed for use with Truffle\n");
+		//out("  -truffle command       -- command used to run Truffle instead of KING\n"); //Truffle is no longer recommended, so it will be hidden
+		//out("  -truffle-options \"ops\" -- truffle options, e.g. \"--cpu 16\"  \n");
+		//out("  -gzip command          -- command used to run gzip, needed for use with Truffle\n");
 		out("  -log results.log       -- log filename, results.log\n");	
 		out("  -ndv                   -- no dominance variance\n");
 		out("  -so                    -- suppress output to screen\n\n");

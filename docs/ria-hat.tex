@@ -19,15 +19,13 @@
 
 *tablel*
 *tr* Platform & File */tr*
-*tr* *html* Linux (x86_64) */html* *tex* Linux (x86\_64) */tex* & *html* <a href="ria-v1.00-linux-x86_64.zip">ria-v1.00-linux-x86_64.zip</a> */html* *tex* ria-v1.00-linux-x86\_64.zip */tex* */tr*
-*tr* *html* Linux (x86_32) */html* *tex* Linux (x86\_32) */tex* & *html* <a href="ria-v1.00-linux-x86_32.zip">ria-v1.00-linux-x86_32.zip</a> */html* *tex* ria-v1.00-linux-x86\_32.zip */tex* */tr*
-*tr* *html* Windows (x86_64) */html* *tex* Windows (x86\_64) */tex* & *html* <a  href="ria-v1.00-windows-x86_64.zip">ria-v1.00-windows-x86_64.zip</a> */html* *tex* ria-v1.00-windows-x86\_64.zip */tex* */tr*
-*tr* *html* Windows (x86_32) */html* *tex* Windows (x86\_32) */tex* & *html* <a  href="ria-v1.00-windows-x86_32.zip">ria-v1.00-windows-x86_32.zip</a> */html* *tex* ria-v1.00-windows-x86\_32.zip */tex* */tr*
+*tr* *html* Linux (x86_64) */html* *tex* Linux (x86\_64) */tex* & *html* <a href="ria-v1.0-linux-x86_64.zip">ria-v1.0-linux-x86_64.zip</a> */html* *tex* ria-v1.0-linux-x86\_64.zip */tex* */tr*
+*tr* *html* Windows (x86_64) */html* *tex* Windows (x86\_64) */tex* & *html* <a  href="ria-v1.0-windows-x86_64.zip">ria-v1.0-windows-x86_64.zip</a> */html* *tex* ria-v1.0-windows-x86\_64.zip */tex* */tr*
 */tablel*
 
 <h2>Source Code</h2>
 
-* Source code for RIA (C/C++) may be downloaded from here: <a href="ria-v1.00-code.zip">ria-v1.00-code.zip</a>. *
+* Source code for RIA (C/C++) may be downloaded from here: <a href="ria-v1.0-code.zip">ria-v1.0-code.zip</a>. *
 
 <h2>Contact</h2>
 
@@ -48,7 +46,7 @@ year=2015
 */codeexample*
 
 *
-Copyright, 2015-2018 Richard Howey, GNU General Public License, version 3.
+Copyright 2015-2023, Richard Howey, GNU General Public License, version 3.
 *
 
 */webpage*
@@ -62,7 +60,7 @@ Copyright, 2015-2018 Richard Howey, GNU General Public License, version 3.
 *section-title* Introduction */section-title*
 
 *
-The program RIA is a C++ implementation of the method described in *cite* nat:15 */cite* and uses calls to programs *html* <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">PLINK</a> and <a href="http://people.virginia.edu/~wc9c/KING/">KING</a>. */html* *tex* PLINK and KING. */tex*
+The program RIA is a C++ implementation of the method described in *cite* nat:15 */cite* and uses calls to programs *html* <a href="https://zzz.bwh.harvard.edu/plink/index.shtml">PLINK</a> and <a href="https://www.kingrelatedness.com/history.shtml">KING</a> version 2.2.9. */html* *tex* PLINK and KING version 2.2.9. */tex*
 *
 
 *************************************************
@@ -85,11 +83,11 @@ The program RIA performs the following steps calling external PLINK and KING whe
 *numlist*
 
 *item*
-The first stage of RIA is the estimation of the IBD sharing probabilities between affected family members using a selection of SNPs across all available SNPs in the data, these probabilities form the *i* priors */i*. The program PLINK *cite* purcell:etal:07 */cite* is used to prune the SNPs to give a representative selection of SNPs using only cases which are then used to estimate the IBD sharing probabilities using KING *cite* manichaikul:etal:10 */cite*.
+The first stage of RIA is the estimation of the IBD sharing probabilities between affected family members using a selection of SNPs across all available SNPs in the data, these probabilities form the *i* priors */i*. The program PLINK *cite* purcell:etal:07 */cite* is used to prune the SNPs to give a representative selection of SNPs using only cases which are then used to estimate the IBD sharing probabilities using KING (version 2.2.9) *cite* manichaikul:etal:10 */cite*.
 
 
 *item*
-The next stage is to step across the genome, set to a default of 50 SNPs per step, and form a SNP window of around 500 to 2000 SNPs and use these SNPs to estimate the IBD sharing probabilities between affected family members using KING. These probabilities give the *i* posteriors */i*.
+The next stage is to step across the genome, set to a default of 50 SNPs per step, and form a SNP window of around 500 to 2000 SNPs and use these SNPs to estimate the IBD sharing probabilities between affected family members using KING (version 2.2.9). These probabilities give the *i* posteriors */i*.
 
 *item*
 The next step is to perform a non-parametric linkage analysis comparing the prior and posterior IBD sharing probabilities using the method as described in *cite* cordell:etal:00 */cite* with minor modifications as described in *cite* nat:15 */cite*. This produces a LOD score for each analysed SNP region together with parameter estimates for the (scaled) additive and dominance variances.
@@ -132,7 +130,7 @@ Download an executable file from the *html* <a href="index.html">home</a>&nbsp; 
 g++ -O3 *.cpp -o ria
 */codeexample*
 
-*item* It is also necessary to having working copies of the programs *html* <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">PLINK</a>&nbsp; */html* *tex* PLINK~ */tex* and *html* <a href="http://people.virginia.edu/~wc9c/KING/">KING</a>&nbsp; */html* *tex* KING~ */tex* installed.
+*item* It is also necessary to having working copies of the programs *html* <a href="https://zzz.bwh.harvard.edu/plink/index.shtml">PLINK</a>&nbsp; */html* *tex* PLINK~ */tex* and *html* <a href="https://www.kingrelatedness.com/history.shtml">KING</a> version 2.2.9&nbsp; */html* *tex* KING version 2.2.9~ */tex* installed. *b* Note: */b* It is very important to download KING version 2.2.9 and not any later versions as we need to use the *code* --homog */code* option which is no longer available in later versions.
 
 *item* Start analysing your data with RIA!
 
@@ -179,9 +177,9 @@ Typing *code* ria */code* with no options will output usage details:
 *
 
 *codeexample*
-RIA: Regional IBD Analysis, v1.00
+RIA: Regional IBD Analysis, v1.0
 ------------------------------------------------------------
-Copyright 2015-2018 Richard Howey, GNU General Public License, v3
+Copyright 2015-2023 Richard Howey, GNU General Public License, v3
 Institute of Genetic Medicine, Newcastle University
 
 Usage:
@@ -190,6 +188,7 @@ Usage:
 
 Options:
   -window-size-cm n     -- set window size to n centimorgans
+  -decreasing-cm        -- set decreasing centimorgan values as previous valid value
   -window-min-snps m    -- set required minimium number of SNPs in a window to m
   -step-size s          -- step size of windows, s
   -start-snp a          -- start analysis from SNP number a
@@ -256,7 +255,7 @@ See *ref* example */ref* for an example of how to use RIA to analyse some data.
 # Command used to run KING
 -king /home/me/my-programs/king/king
 
-# SNP window size
+# cM window size
 -window-size-cm 5
 
 # Number of SNPs to move to the next SNP window
@@ -299,7 +298,7 @@ tempRIA-posterior-57703.bim
 tempRIA-posterior-57703.fam
 tempRIA-posterior-57703.kin
 */codeexample*
- 
+
 *
 The use of the process ID ensures that several RIA jobs may be ran in the same location without any issues of interference. All of these temporary files should be deleted by RIA when they are no longer needed, however if RIA is forced to unexpectedly stop for some reason then these files may still be lying around. In which case, they should be carefully deleted if necessary.
 *
@@ -327,7 +326,7 @@ This section runs through an example analysis using RIA with example data which 
 *
 
 *
-We already have PLINK installed on our system so we will not bother ourselves to download it from *html* <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">here</a>,&nbsp; */html* *tex* here,~ */tex* nor will we use the *code* -plink */code* option as it is already set up to run by typing *q* plink */q*, which is set by default. The KING program on the other hand is not installed, so we shall download it from *html* <a href="http://people.virginia.edu/~wc9c/KING/">here</a>,&nbsp; */html* *tex* here,~ */tex* and save the executable file at location *code* /home/me/my-programs/king/ */code* so that KING may be ran by typing *code* /home/me/my-programs/king/king */code*.
+We already have PLINK installed on our system so we will not bother ourselves to download it from *html* <a href="https://zzz.bwh.harvard.edu/plink/index.shtml">here</a>,&nbsp; */html* *tex* here,~ */tex* nor will we use the *code* -plink */code* option as it is already set up to run by typing *q* plink */q*, which is set by default. The KING program (version 2.2.9) on the other hand is not installed, so we shall download it from *html* <a href="https://www.kingrelatedness.com/history.shtml">here</a>,&nbsp; */html* *tex* here,~ */tex* and save the executable file at location *code* /home/me/my-programs/king/ */code* so that KING may be ran by typing *code* /home/me/my-programs/king/king */code*. *b* Note: */b* It is very important to download KING version 2.2.9 and not any later versions as we need to use the *code* --homog */code* option which is no longer available in later versions.
 *
 
 *
@@ -343,19 +342,19 @@ This will create output similar to the following.
 *
 
 *codeexample*
-RIA: Regional IBD Analysis, v2.00
+RIA: Regional IBD Analysis, v1.0
 ------------------------------------------------------------
-Copyright 2015-2018 Richard Howey, GNU General Public License, v3
+Copyright 2015-2023 Richard Howey, GNU General Public License, v3
 Institute of Genetic Medicine, Newcastle University
 
 Parameters:
-Input file: demo-data/exampleRIAData.bed
+Input file: exampleRIAData.bed
 Output file: resultsRIAExample.dat
-Log file: resultsRIAExample.log
+Log file: resultsRIAExampleData.log
 Using additive and dominance variance model
 Start at first SNP with full SNP window
 End at last SNP with full SNP window
-Window size: 5 cM
+Window size: 15 cM
 Minimum number of SNPs in a window: 100
 SNP step size: 50 SNPs
 Number of cases: 362
@@ -363,27 +362,26 @@ Number of unused controls: 35
 Number of SNPs: 29413
 
 Creating list of pruned SNPs using PLINK command:
-plink --noweb --indep 50 50 2 --mind 0.01 --maf 0.25 --geno 0.05 --bfile exampleRIAData --out tempRIA-priors1-8553 >/dev/null 2>&1
+plink --noweb --indep 50 50 2 --mind 0.01 --maf 0.25 --geno 0.05 --bfile demo-data/exampleRIAData --out tempRIA-priors1-24492 >/dev/null 2>&1
 
 Creating data file to calculate priors using PLINK command:
-plink --noweb --bfile exampleRIAData --filter-cases --extract tempRIA-priors1-8553.prune.in --make-bed --out tempRIA-priors2-8553 >/dev/null 2>&1
+plink --noweb --bfile demo-data/exampleRIAData --filter-cases --extract tempRIA-priors1-24492.prune.in --make-bed --out tempRIA-priors2-24492 >/dev/null 2>&1
 
 Calculating priors using KING command:
-/home/me/my-programs/king/king -b tempRIA-priors2-8553.bed --homo --prefix tempRIA-priors2-8553 >/dev/null 2>&1
+king -b tempRIA-priors2-24492.bed --homog --prefix tempRIA-priors2-24492 >/dev/null 2>&1
 
 Number of affected relative pairs (ARPs) in priors: 301
 
 Calculating posteriors (for each SNP window) using KING command:
-/home/me/my-programs/king/king -b tempRIA-posterior-8553.bed --homo --prefix tempRIA-posterior-8553 >/dev/null 2>&1
+king -b tempRIA-posterior-24492.bed --homog --prefix tempRIA-posterior-24492 >/dev/null 2>&1
 
+15 cM windows - number of SNPs summary statistics:
+Mean: 2442.33
+Median: 2266
+Standard deviation: 606.466
+Range: (1458, 3634)
 
-5 cM windows - number of SNPs summary statistics:
-Mean: 850.036
-Standard deviation: 343.753
-Range: (355, 2058)
-
-
-Run time: 4 minutes and 16 seconds
+Run time: 10 minutes and 25 seconds
 */codeexample*
 
 *
@@ -396,17 +394,18 @@ The results file *code* resultsRIAExample.dat */code* should look as follows:
 
 *codeexample*
 SNP CHR ID BP VAR_A VAR_D MLS
-248 6 rs1331481 994348 2.023757958 0 4.344757624
-298 6 rs6932005 1123561 1.973952102 0 4.225114439
-348 6 rs7739254 1279448 1.984412731 0 4.110303207
-398 6 rs4443540 1450510 1.917276107 0 4.03466902
-448 6 rs2814819 1634517 1.790252968 0 3.732580781
+SNP CHR ID CM BP VAR_A VAR_D MLS
+741 6 rs11755767 7.52007 2804601 1.583936049 0 2.828838716
+791 6 rs7765538 8.14908 3000876 1.544010298 0 2.726726528
+841 6 rs744375 8.85487 3294907 1.473726461 0 2.565180586
+891 6 rs7763703 9.47382 3433624 1.392624092 0 2.383495002
+941 6 rs12526106 10.0032 3690722 1.339150984 0 2.272297645
 ...
-28898 6 rs9346656 156739373 1.239363365 0 2.824647162
-28948 6 rs1871428 157326847 1.103212627 0 2.409229619
-28998 6 rs17551813 158113713 1.053427084 0 2.317373501
-29048 6 rs9455695 158688454 1.045051187 0 2.329231332
-29098 6 rs9346489 159237500 1.04876469 0.009156993548 2.378724765
+28341 6 rs11755875 188.372 166136328 1.21271465 0.1564407936 2.774211867
+28391 6 rs705791 188.972 166288440 1.127065043 0.1950593781 2.693304349
+28441 6 rs12154075 189.175 166486261 1.12910064 0.1965589048 2.69542933
+28491 6 rs1033725 189.362 166627240 1.125312283 0.1817039321 2.647993295
+28541 6 rs6935542 190.191 166817722 0.9200496884 0.3786320582 2.675835187
 */codeexample*
 
 *
@@ -418,6 +417,7 @@ The columns for the results file are as follows:
 *tr* SNP & The SNP number as it appears in file. */tr*
 *tr* CHR & Chromosome of the SNP. */tr*
 *tr* ID & The name of the SNP. */tr*
+*tr* CM & The centimorgan value of the SNP. */tr*
 *tr* BP & The base pair position of the SNP. */tr*
 *tr* *html* VAR_A */html* *tex* VAR\_A */tex* & The additive variance parameter. */tr*
 *tr* *html* VAR_D */html* *tex* VAR\_D */tex* & The dominance variance parameter. */tr*
@@ -443,7 +443,7 @@ This will produce the following plot:
 *
 
 *figure*
-exampleRIA.png
+exampleRIA2023.png
 
 *caption*
 Plot of RIA test results.
@@ -520,7 +520,7 @@ If all of the data is to be analysed it is much easy to use the *code* -job */co
 */codeexample*
 
 *
-The temporary intermediate files used by RIA depend on the process ID of each job so there is no need to worry about these files interfering with one another.  
+The temporary intermediate files used by RIA depend on the process ID of each job so there is no need to worry about these files interfering with one another.
 Only the first results file will contain the header making it easy to combine the results into one results file:
 *
 

@@ -1,6 +1,6 @@
 /************************************************************************
- * RIA, version 1.00
- * Copyright 2015
+ * RIA, version 1.1
+ * Copyright 2015-2023
  * Richard Howey
  * Institute of Genetic Medicine, Newcastle University
  *
