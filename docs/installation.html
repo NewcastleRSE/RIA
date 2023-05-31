@@ -40,6 +40,7 @@
 <li><a href="introduction.html">1 Introduction</a>
 <ul>
 <li><a href="introduction.html#overview">1.1 Overview</a></li>
+<li><a href="introduction.html#ibd-calc">1.2 Estimation of IBD sharing probabilities</a></li>
 </ul>
 </li>
 <li><a href="installation.html">2 Installation</a>
@@ -71,14 +72,12 @@ Download an executable file from the <a href="index.html">home</a>&nbsp;page for
 <ol>
 <li>
 Download the code from the home page. </li><li>
-Compile it by typing something like the following: <pre>
-g++ -O3 *.cpp -o ria
+Compile it by typing something like the following: <pre>g++ -O3 src/*.cpp -o ria
 </pre>
 </li><li>
-It is also necessary to having working copies of the programs <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">PLINK</a>&nbsp;and <a href="http://people.virginia.edu/~wc9c/KING/">KING</a>&nbsp;installed. </li><li>
+It is also necessary to having working copies of the programs <a href="https://zzz.bwh.harvard.edu/plink/index.shtml">PLINK</a>&nbsp;and <a href="https://www.kingrelatedness.com/history.shtml">KING</a> version 2.2.9&nbsp;installed. <b>Note:</b> It is very important to download KING version 2.2.9 and not any later versions as we need to use the <tt>--homog</tt> option which is no longer available in later versions. </li><li>
 Start analysing your data with RIA! </li><li>
-If you are using Windows then you will need to uncomment the line below in the <tt>main.h</tt> file: <pre>
-#define USING_WINDOWS
+If you are using Windows then you will need to uncomment the line below in the <tt>main.h</tt> file: <pre>#define USING_WINDOWS
 </pre>
 </li>
 </ol>

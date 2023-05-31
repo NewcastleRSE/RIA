@@ -1,8 +1,8 @@
 /************************************************************************
  * RIA, version 1.1
- * Copyright 2015-2023
+ * Copyright 2015-present
  * Richard Howey
- * Institute of Genetic Medicine, Newcastle University
+ * Research Software Engineering, Newcastle University
  *
  * richard.howey@ncl.ac.uk
  * http://www.staff.ncl.ac.uk/richard.howey/
@@ -49,8 +49,8 @@ void header()
 {
 	out("\nRIA: Regional IBD Analysis, v1.1\n");
 	out("------------------------------------------------------------\n");
-	out("Copyright 2015-2023 Richard Howey, GNU General Public License, v3\n");
-	out("Institute of Genetic Medicine, Newcastle University\n\n");
+	out("Copyright 2015-present Richard Howey, GNU General Public License, v3\n");
+	out("Research Software Engineering, Newcastle University\n\n");
 };
 
 //! Outputs program usage to screen.

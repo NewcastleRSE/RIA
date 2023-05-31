@@ -1,8 +1,8 @@
 /************************************************************************
  * RIA, version 1.1
- * Copyright 2015-2023
+ * Copyright 2015-present
  * Richard Howey
- * Institute of Genetic Medicine, Newcastle University
+ * Research Software Engineering, Newcastle University
  *
  * richard.howey@ncl.ac.uk
  * http://www.staff.ncl.ac.uk/richard.howey/

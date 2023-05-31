@@ -40,6 +40,7 @@
 <li><a href="introduction.html">1 Introduction</a>
 <ul>
 <li><a href="introduction.html#overview">1.1 Overview</a></li>
+<li><a href="introduction.html#ibd-calc">1.2 Estimation of IBD sharing probabilities</a></li>
 </ul>
 </li>
 <li><a href="installation.html">2 Installation</a>
@@ -67,18 +68,32 @@
 <div id="rightcolumn">
 <h1>1 Introduction</h1>
 <p>
-The program RIA is a C++ implementation of the method described in <a href="references.html#nat:15">Eu-Ahsunthornwattana et al. (2015)</a> and uses calls to programs <a href="http://pngu.mgh.harvard.edu/~purcell/plink/">PLINK</a> and <a href="http://people.virginia.edu/~wc9c/KING/">KING</a>.</p>
+The program RIA is a C++ implementation of the method described in <a href="references.html#nat:15">Eu-Ahsunthornwattana et al. (2015)</a> and uses calls to programs <a href="https://zzz.bwh.harvard.edu/plink/index.shtml">PLINK</a> and <a href="https://www.kingrelatedness.com/history.shtml">KING</a> version 2.2.9.</p>
 <h2><a name="overview">1.1 Overview</a></h2>
 <p>
 The program RIA performs the following steps calling external PLINK and KING where required: </p>
 <ol>
 <li>
-The first stage of RIA is the estimation of the IBD sharing probabilities between affected family members using a selection of SNPs across all available SNPs in the data, these probabilities form the <i>priors</i>. The program PLINK <a href="references.html#purcell:etal:07">Purcell et al. (2007)</a> is used to prune the SNPs to give a representative selection of SNPs using only cases which are then used to estimate the IBD sharing probabilities using KING <a href="references.html#manichaikul:etal:10">Manichaikul et al. (2010)</a>. </li><li>
-The next stage is to step across the genome, set to a default of 50 SNPs per step, and form a SNP window of around 500 to 2000 SNPs and use these SNPs to estimate the IBD sharing probabilities between affected family members using KING. These probabilities give the <i>posteriors</i>. </li><li>
+The first stage of RIA is the estimation of the IBD sharing probabilities between affected family members using a selection of SNPs across all available SNPs in the data, these probabilities form the <i>priors</i>. The program PLINK <a href="references.html#purcell:etal:07">Purcell et al. (2007)</a> is used to prune the SNPs to give a representative selection of SNPs using only cases which are then used to estimate the IBD sharing probabilities using KING (version 2.2.9) <a href="references.html#manichaikul:etal:10">Manichaikul et al. (2010)</a>. See <a href="introduction.html#ibd-calc">section 1.2</a> on how the IBD sharing probabilities are estimated. </li><li>
+The next stage is to step across the genome, set to a default of 50 SNPs per step, and form a SNP window of around 500 to 2000 SNPs and use these SNPs to estimate the IBD sharing probabilities between affected family members using KING (version 2.2.9). These probabilities give the <i>posteriors</i>. See <a href="introduction.html#ibd-calc">section 1.2</a> on how the IBD sharing probabilities are estimated. </li><li>
 The next step is to perform a non-parametric linkage analysis comparing the prior and posterior IBD sharing probabilities using the method as described in <a href="references.html#cordell:etal:00">Cordell et al. (2000)</a> with minor modifications as described in <a href="references.html#nat:15">Eu-Ahsunthornwattana et al. (2015)</a>. This produces a LOD score for each analysed SNP region together with parameter estimates for the (scaled) additive and dominance variances.</li>
 </ol>
 <p>
 For full details of the methodology of RIA please see the accompanying paper <a href="references.html#nat:15">Eu-Ahsunthornwattana et al. (2015)</a>. </p>
+<h2><a name="ibd-calc">1.2 Estimation of IBD sharing probabilities</a></h2>
+<p>
+<a href="https://www.kingrelatedness.com/history.shtml">KING</a> version 2.2.9&nbsp;is used with option <tt>--homog</tt> to estimate the IBD sharing probabilities. Let <i>IBD2</i>, <i>IBD1</i> and <i>IBD0</i> be the probabilities that two individuals share 2, 1 or 0 alleles IBD respectively and <i>K</i> the kinship coefficient, then <i>IBD2</i>, <i>IBD1</i> and <i>IBD0</i> are estimated for each SNP as follows: </p>
+<ol>
+<li>
+KING version 2.2.9 is ran with the <tt>--homog</tt> option which returns estimates of <i>K</i> and <i>IBD0</i>. </li><li>
+<i>K</i> and <i>IBD0</i> are truncated to plausible values between 0 to 0.5 and between 0 to 1 respectively if necessary. </li><li>
+<i>IBD2</i> is estimated as <i>4K - (1 - IBD0)</i>. </li><li>
+<i>IBD2</i> is truncated to a plausible value between 0 to 1 if necessary. </li><li>
+<i>IBD1</i> is estimated as <i>1 - IBD0 - IBD2</i>. </li><li>
+<i>IBD1</i> is truncated to a plausible value between 0 to 1 if necessary. </li><li>
+For the posterior probabilities only: if any of the priors for <i>IBD2</i>, <i>IBD1</i> or <i>IBD0</i> are equal to zero then the corresponding posterior values are also set to zero. If this results in all IBD probabilities being equal to zero then an error is reported. </li><li>
+<i>IBD2</i>, <i>IBD1</i> and <i>IBD0</i> are scaled so that <i>IBD2 + IBD1 + IBD0 = 1</i> if necessary.</li>
+</ol>
 <br />
 <div class="prevnext"><span class="right"><a href="installation.html">next-&gt;</a>
 </span></div><!-- End Right Column -->
