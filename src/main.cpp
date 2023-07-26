@@ -202,7 +202,11 @@ int main(int argc, char * argv[])
 	bool noDomVar = false;
 	bool keepTempFiles = false;
 	string plinkPriorOptions;
-
+	string posteriorInputFilePrefix = "";
+	string posteriorOutputFilePrefix = "";
+	unsigned int posteriorStartWindow = 0;
+	unsigned int posteriorEndWindow = 0;
+	
 	outputToScreen = true;	
 
 	bool useParaFile = false;
@@ -260,6 +264,10 @@ int main(int argc, char * argv[])
 		else if(option ==  "-i") getOptionValue(filename, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-i-prior") getOptionValue(priorFilename, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-o-prior") getOptionValue(priorOutputFilename, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-i-posteriors-prefix") getOptionValue(posteriorInputFilePrefix, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-o-posteriors-prefix") getOptionValue(posteriorOutputFilePrefix, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-posterior-start-window") getOptionValue(posteriorStartWindow, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-posterior-end-window") getOptionValue(posteriorStartWindow, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-plink") getOptionValue(plink, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-plink-options") getOptionValue(plinkPriorOptions, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-king") getOptionValue(king, useParaFile, argcount, argc, argv, readParaFile);
