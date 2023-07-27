@@ -58,6 +58,15 @@ string toString(int & i)
 	return aStringStream.str();
 };
 
+//! Converts an integer to a string.
+string toString(unsigned int & i)
+{
+	ostringstream aStringStream;
+	aStringStream << i;
+
+	return aStringStream.str();
+};
+
 //! Returns a string of the run time.
 string getTime(const double & t)
 {
@@ -235,6 +244,7 @@ void Analysis::runAnalysis()
 	unsigned int snpID = snpWindow->getAnalysisSNPNo();
 	unsigned int snpIDOld = 0;
 	unsigned int calcCount = 0;
+	unsigned int windowNumber = 0;
 
 	snpWindow->outputProgress(calcCount);
 
@@ -249,9 +259,13 @@ void Analysis::runAnalysis()
 		{
 			if(snpWindow->getValidWindow() && snpWindow->hasWindowMinNoSNPs())
 			{
-				calculatePosteriors();
-				fitModels(snpID); 	   
-				snpWindow->recordWindowSize();
+				windowNumber++;
+				if((posteriorStartWindow == 0 || windowNumber >= posteriorStartWindow) && (posteriorEndWindow == 0 || windowNumber <= posteriorEndWindow)) //do selected windows if set
+				{
+					calculatePosteriors(windowNumber);
+					fitModels(snpID);
+					snpWindow->recordWindowSize();
+				};
 
 				//cout << "*";
 			};
@@ -742,30 +756,36 @@ void Analysis::calculatePriorsIBDStitch()
 };
 
 //! Calculates the posteriors using IBD calculations.
-void Analysis::calculatePosteriors()
+void Analysis::calculatePosteriors(unsigned int & windowNumber)
 {
 	if(doTruffle) { calculatePosteriorsTruffle(); return; }
 	else if(doIbdStitch) { calculatePosteriorsIBDStitch(); return; };
 
-	snpWindow->createFilesForPosteriorCalc(outputPostFilename);
-
-	//calculate the IBDs for the pruned data set in order to calculate the priors
-	string kingCommand = king + " -b " +  outputPostFilename + ".bed --homog --prefix " + outputPostFilename + endCommand;
-
-	unsigned int kingErrorCode = system(kingCommand.c_str());
-
-	if(kingErrorCode != 0)
+	if(posteriorInputFilePrefix != "") outputPostFilename = posteriorInputFilePrefix + "-" + toString(windowNumber); //use previously calculated posteriors
+	else
 	{
-		outErr("Problem executing KING (error code "); outErr(kingErrorCode); outErr(") when estimating IBDs with:\n\n ");
-		outErr(kingCommand); outErr("\n\n");
+		if(posteriorOutputFilePrefix != "") outputPostFilename = posteriorOutputFilePrefix + "-" + toString(windowNumber);
 
-		deleteAllTemporaryFiles();
-		exit(kingErrorCode);		
+		snpWindow->createFilesForPosteriorCalc(outputPostFilename);
+
+		//calculate the IBDs for the pruned data set in order to calculate the priors
+		string kingCommand = king + " -b " + outputPostFilename + ".bed --homog --prefix " + outputPostFilename + endCommand;
+
+		unsigned int kingErrorCode = system(kingCommand.c_str());
+
+		if (kingErrorCode != 0)
+		{
+			outErr("Problem executing KING (error code "); outErr(kingErrorCode); outErr(") when estimating IBDs with:\n\n ");
+			outErr(kingCommand); outErr("\n\n");
+
+			deleteAllTemporaryFiles();
+			exit(kingErrorCode);
+		};
 	};
 
 	//read in data and store posteriors
 	setupPosteriors(outputPostFilename);
-	deletePostTemporaryFiles();
+	if(posteriorOutputFilePrefix == "") deletePostTemporaryFiles();
 };
 
 //! Calculates the posteriors using IBD calculations given by TRUFFLE.

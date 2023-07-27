@@ -83,6 +83,11 @@ private:
 	int pid;
 	string postFamFile;
 	
+	string posteriorInputFilePrefix;
+	string posteriorOutputFilePrefix;
+	unsigned int posteriorStartWindow;
+	unsigned int posteriorEndWindow;
+
 	unsigned int windowStepSize;
 	bool missingCMZero;
 	bool decreasingCM;
@@ -128,8 +133,10 @@ private:
 
 public:
 
-	Analysis(string & fn, string & ofn, string & gfn, string & gofn, string & plk, string & plkops, string & kng, string & trff, string & trffOps, string & gzp, string & ibdSt, double & wcMs, bool & misscm, bool decm, unsigned int & mwssnps, unsigned int & wstps, unsigned int & ssnp, unsigned int & esnp, string & ssnpname, string & esnpname, unsigned int & jn, unsigned int & jt, bool & ndv, bool & go, bool & ktf)
-		:  filename(fn), outputFilename(ofn), priorFilename(gfn), priorOutputFilename(gofn), plink(plk), plinkPriorOptions(plkops), king(kng), truffle(trff), truffleOptions(trffOps), gzip(gzp), ibdStitch(ibdSt), windowStepSize(wstps), missingCMZero(misscm), decreasingCM(decm), startSNP(ssnp), endSNP(esnp), jobNo(jn), jobTotal(jt), noDomVar(ndv), priorOnly(go), prevVarA(0), prevVarD(0), keepTempFiles(ktf)
+	Analysis(string & fn, string & ofn, string & gfn, string & gofn, string & plk, string & plkops, string & kng, string & trff, string & trffOps, string & gzp, string & ibdSt, double & wcMs, bool & misscm, bool decm, unsigned int & mwssnps, unsigned int & wstps, unsigned int & ssnp, unsigned int & esnp, string & ssnpname, string & esnpname, unsigned int & jn, unsigned int & jt, bool & ndv, bool & go, bool & ktf,
+		string & pifp, string & pofp, unsigned int & psw, unsigned int & pew)
+		:  filename(fn), outputFilename(ofn), priorFilename(gfn), priorOutputFilename(gofn), plink(plk), plinkPriorOptions(plkops), king(kng), truffle(trff), truffleOptions(trffOps), gzip(gzp), ibdStitch(ibdSt), windowStepSize(wstps), missingCMZero(misscm), decreasingCM(decm), startSNP(ssnp), endSNP(esnp), jobNo(jn), jobTotal(jt), noDomVar(ndv), priorOnly(go), prevVarA(0), prevVarD(0), keepTempFiles(ktf),
+		posteriorInputFilePrefix(pifp), posteriorOutputFilePrefix(pofp), posteriorStartWindow(psw), posteriorEndWindow(pew)
 	{			
 		#ifndef USING_WINDOWS
 			pid = getpid();
@@ -189,7 +196,7 @@ public:
 	void setupPriorsUsingInputFile();
 	void setupPriorsTruffle(string & filenameIBD);
 	void outputTrufflePairsFile();
-	void calculatePosteriors();
+	void calculatePosteriors(unsigned int & windowNumber);
 	void setupPosteriors(string & filenameIBD);
 	void setupPosteriorsTruffle(string & filenameIBD);
 	void fitModels(const unsigned int & snpID);
