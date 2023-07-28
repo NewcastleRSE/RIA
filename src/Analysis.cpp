@@ -59,7 +59,7 @@ string toString(int & i)
 };
 
 //! Converts an integer to a string.
-string toString(unsigned int & i)
+string toStringUI(unsigned int & i)
 {
 	ostringstream aStringStream;
 	aStringStream << i;
@@ -761,10 +761,10 @@ void Analysis::calculatePosteriors(unsigned int & windowNumber)
 	if(doTruffle) { calculatePosteriorsTruffle(); return; }
 	else if(doIbdStitch) { calculatePosteriorsIBDStitch(); return; };
 
-	if(posteriorInputFilePrefix != "") outputPostFilename = posteriorInputFilePrefix + "-" + toString(windowNumber); //use previously calculated posteriors
+	if(posteriorInputFilePrefix != "") outputPostFilename = posteriorInputFilePrefix + "-" + toStringUI(windowNumber); //use previously calculated posteriors
 	else
 	{
-		if(posteriorOutputFilePrefix != "") outputPostFilename = posteriorOutputFilePrefix + "-" + toString(windowNumber);
+		if(posteriorOutputFilePrefix != "") outputPostFilename = posteriorOutputFilePrefix + "-" + toStringUI(windowNumber);
 
 		snpWindow->createFilesForPosteriorCalc(outputPostFilename);
 

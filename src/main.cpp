@@ -407,7 +407,7 @@ int main(int argc, char * argv[])
 	if(decreasingCM) out("Replacing decreasing centimorgan values with previous valid centimorgan value\n");
 
 	//create analysis option and run analysis
-	Analysis anAnalysis(filename, outputFilename, priorFilename, priorOutputFilename, plink, plinkPriorOptions, king, truffle, truffleOptions, gzip, ibdStitch, windowCMSize, missingCMZero, decreasingCM, windowMinSNPSize, windowStepSize, startSNP, endSNP, startSNPName, endSNPName, jobNo, jobTotal, noDomVar, priorOnly, keepTempFiles);
+	Analysis anAnalysis(filename, outputFilename, priorFilename, priorOutputFilename, plink, plinkPriorOptions, king, truffle, truffleOptions, gzip, ibdStitch, windowCMSize, missingCMZero, decreasingCM, windowMinSNPSize, windowStepSize, startSNP, endSNP, startSNPName, endSNPName, jobNo, jobTotal, noDomVar, priorOnly, keepTempFiles, posteriorInputFilePrefix, posteriorOutputFilePrefix, posteriorStartWindow, posteriorEndWindow);
 
 	if(!priorOnly) anAnalysis.runAnalysis();	
 
