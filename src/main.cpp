@@ -62,30 +62,34 @@ void usage()
 		out(" or ./ria -pf parameterfile\n\n");
 
 		out("Options:\n");
-		out("  -window-size-cm n      -- set window size to n centimorgans\n");
-		//out("  -missing-cm-zero       -- treat 0 cM as missing, otherwise only negative values\n");
-		out("  -decreasing-cm         -- set decreasing centimorgan values as previous valid value\n");
-		out("  -window-min-snps m     -- set required minimium number of SNPs in a window to m\n");
-		out("  -step-size s           -- step size of windows, s\n");
-		out("  -start-snp a           -- start analysis from SNP number a\n");
-		out("  -end-snp b             -- end analysis at SNP number b\n");
-		out("  -start-snp-name x      -- start analysis from SNP name x\n");
-		out("  -end-snp-name y        -- end analysis at SNP name y\n");
-		out("  -job d t               -- job number d of t\n");
-		out("  -i file.bed            -- input binary pedigree file, file.bed\n");		
-		out("  -o results.dat         -- output results file, results.dat\n");
-		out("  -i-prior file          -- input prior IBDs, file\n");
-		out("  -o-prior file          -- output prior IBDs, file\n");
-		out("  -prior-only            -- calculate prior IBDs only\n");
-		out("  -plink command         -- command used to run PLINK\n");
-		out("  -plink-options \"ops\"   -- PLINK pruning options used to calculate the prior\n");
-		out("  -king command          -- command used to run KING\n");
-		//out("  -truffle command       -- command used to run Truffle instead of KING\n"); //Truffle is no longer recommended, so it will be hidden
-		//out("  -truffle-options \"ops\" -- truffle options, e.g. \"--cpu 16\"  \n");
-		//out("  -gzip command          -- command used to run gzip, needed for use with Truffle\n");
-		out("  -log results.log       -- log filename, results.log\n");	
-		out("  -ndv                   -- no dominance variance\n");
-		out("  -so                    -- suppress output to screen\n\n");
+		out("  -window-size-cm n         -- set window size to n centimorgans\n");
+		//out("  -missing-cm-zero          -- treat 0 cM as missing, otherwise only negative values\n");
+		out("  -decreasing-cm            -- set decreasing centimorgan values as previous valid value\n");
+		out("  -window-min-snps m        -- set required minimium number of SNPs in a window to m\n");
+		out("  -step-size s              -- step size of windows, s\n");
+		out("  -start-snp a              -- start analysis from SNP number a\n");
+		out("  -end-snp b                -- end analysis at SNP number b\n");
+		out("  -start-snp-name x         -- start analysis from SNP name x\n");
+		out("  -end-snp-name y           -- end analysis at SNP name y\n");
+		out("  -job d t                  -- job number d of t\n");
+		out("  -i file.bed               -- input binary pedigree file, file.bed\n");		
+		out("  -o results.dat            -- output results file, results.dat\n");
+		out("  -i-prior file             -- input prior IBDs, file\n");
+		out("  -o-prior file             -- output prior IBDs, file\n");
+		out("  -prior-only               -- calculate prior IBDs only\n");
+		//out("  -i-posteriors-prefix fp   -- input posterior IBDs file prefix, fp\n");
+		//out("  -o-posteriors-prefix fp   -- output posterior IBDs file prefix, fp\n");
+		//out("  -posterior-start-window p -- start analysis from posterior window number p\n");
+		//out("  -posterior-end-window q   -- end analysis at posterior window number q\n");
+		out("  -plink command            -- command used to run PLINK\n");
+		out("  -plink-options \"ops\"    -- PLINK pruning options used to calculate the prior\n");
+		out("  -king command             -- command used to run KING\n");
+		//out("  -truffle command         -- command used to run Truffle instead of KING\n"); //Truffle is no longer recommended, so it will be hidden
+		//out("  -truffle-options \"ops\"   -- truffle options, e.g. \"--cpu 16\"  \n");
+		//out("  -gzip command            -- command used to run gzip, needed for use with Truffle\n");
+		out("  -log results.log          -- log filename, results.log\n");	
+		out("  -ndv                      -- no dominance variance\n");
+		out("  -so                       -- suppress output to screen\n\n");
 
 		out("Default Options in Effect:\n");
 		out("  -window-size-cm 15\n");
@@ -198,7 +202,11 @@ int main(int argc, char * argv[])
 	bool noDomVar = false;
 	bool keepTempFiles = false;
 	string plinkPriorOptions;
-
+	string posteriorInputFilePrefix = "";
+	string posteriorOutputFilePrefix = "";
+	unsigned int posteriorStartWindow = 0;
+	unsigned int posteriorEndWindow = 0;
+	
 	outputToScreen = true;	
 
 	bool useParaFile = false;
@@ -256,6 +264,10 @@ int main(int argc, char * argv[])
 		else if(option ==  "-i") getOptionValue(filename, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-i-prior") getOptionValue(priorFilename, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-o-prior") getOptionValue(priorOutputFilename, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-i-posteriors-prefix") getOptionValue(posteriorInputFilePrefix, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-o-posteriors-prefix") getOptionValue(posteriorOutputFilePrefix, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-posterior-start-window") getOptionValue(posteriorStartWindow, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-posterior-end-window") getOptionValue(posteriorStartWindow, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-plink") getOptionValue(plink, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-plink-options") getOptionValue(plinkPriorOptions, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-king") getOptionValue(king, useParaFile, argcount, argc, argv, readParaFile);
@@ -395,7 +407,7 @@ int main(int argc, char * argv[])
 	if(decreasingCM) out("Replacing decreasing centimorgan values with previous valid centimorgan value\n");
 
 	//create analysis option and run analysis
-	Analysis anAnalysis(filename, outputFilename, priorFilename, priorOutputFilename, plink, plinkPriorOptions, king, truffle, truffleOptions, gzip, ibdStitch, windowCMSize, missingCMZero, decreasingCM, windowMinSNPSize, windowStepSize, startSNP, endSNP, startSNPName, endSNPName, jobNo, jobTotal, noDomVar, priorOnly, keepTempFiles);
+	Analysis anAnalysis(filename, outputFilename, priorFilename, priorOutputFilename, plink, plinkPriorOptions, king, truffle, truffleOptions, gzip, ibdStitch, windowCMSize, missingCMZero, decreasingCM, windowMinSNPSize, windowStepSize, startSNP, endSNP, startSNPName, endSNPName, jobNo, jobTotal, noDomVar, priorOnly, keepTempFiles, posteriorInputFilePrefix, posteriorOutputFilePrefix, posteriorStartWindow, posteriorEndWindow);
 
 	if(!priorOnly) anAnalysis.runAnalysis();	
 
