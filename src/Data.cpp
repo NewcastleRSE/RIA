@@ -168,7 +168,7 @@ void SNPWindow::setUpSNPDesciptionData(string & filename, string & startSNPName,
 	readMapFile.open(mapFilename.c_str());
 	if(!readMapFile.is_open())
 	{
-		outErr("Cannot read binary map file: "); outErr(mapFilename); outErr("!\n");
+		outErr("\nCannot read binary map file: "); outErr(mapFilename); outErr("!\n");
 		deleteAllTemporaryFiles();
 		exit(1);
 	};
@@ -332,7 +332,7 @@ void SNPWindow::setupCaseControls(string & fname, const bool & makePostFamFile)
 	readFamilyFile.open(famFilename.c_str());
 	if(!readFamilyFile.is_open())
 	{
-		outErr("Cannot read family file: "); outErr(famFilename); outErr("!\n");
+		outErr("\nCannot read family file: "); outErr(famFilename); outErr("!\n");
 		deleteAllTemporaryFiles();
 		exit(1);
 	};
@@ -1037,7 +1037,7 @@ void SNPWindow::setUpFirstWindow(string & filename)
 	
 	if(!readSNPData.is_open())
 	{
-		outErr("Cannot read binary pedigree file: "); outErr(filename); outErr("!\n");
+		outErr("\nCannot read binary pedigree file: "); outErr(filename); outErr("!\n");
 		deleteAllTemporaryFiles();
 		exit(1);
 	};
