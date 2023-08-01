@@ -30,7 +30,7 @@
 */
 
 // Uncomment if trying to compile using WINDOWS
-#define USING_WINDOWS
+//#define USING_WINDOWS
 
 #ifndef __MAIN
 #define __MAIN
