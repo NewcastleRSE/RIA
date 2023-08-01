@@ -267,7 +267,7 @@ int main(int argc, char * argv[])
 		else if(option ==  "-i-posteriors-prefix") getOptionValue(posteriorInputFilePrefix, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-o-posteriors-prefix") getOptionValue(posteriorOutputFilePrefix, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-posterior-start-window") getOptionValue(posteriorStartWindow, useParaFile, argcount, argc, argv, readParaFile);
-		else if(option ==  "-posterior-end-window") getOptionValue(posteriorStartWindow, useParaFile, argcount, argc, argv, readParaFile);
+		else if(option ==  "-posterior-end-window") getOptionValue(posteriorEndWindow, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-plink") getOptionValue(plink, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-plink-options") getOptionValue(plinkPriorOptions, useParaFile, argcount, argc, argv, readParaFile);
 		else if(option ==  "-king") getOptionValue(king, useParaFile, argcount, argc, argv, readParaFile);
@@ -385,6 +385,11 @@ int main(int argc, char * argv[])
 	
 	if(!priorOnly)
 	{
+		if(posteriorInputFilePrefix != "") { out("Posteriors input file prefix: "); out(posteriorInputFilePrefix); out("\n"); };
+		if(posteriorOutputFilePrefix != "") { out("Posteriors output file prefix: "); out(posteriorOutputFilePrefix); out("\n"); };
+		if(posteriorStartWindow != 0) { out("Posteriors start window number: "); out(posteriorStartWindow); out("\n"); };
+		if(posteriorEndWindow != 0) { out("Posteriors end window number: "); out(posteriorEndWindow); out("\n"); };
+
 		if(noDomVar) out("Using no dominance variance model\n");
 		else {out("Using additive and dominance variance model\n");};
 	

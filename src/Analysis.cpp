@@ -159,7 +159,7 @@ void Analysis::setupTemporaryFilenames()
 	outputPriorFilename3IBDStitch = "tempRIA-priors3-" + pidStr;
 	outputPriorFilename3Truffle = "tempRIA-priors3-" + pidStr;
 
-	outputPostFilename = "tempRIA-posterior-"+pidStr;
+	outputPostFilename = "tempRIA-posterior-" + pidStr;
 
 	trufflePairsFilename = "tempRIA-pairs-" + pidStr + ".dat";
 
@@ -203,8 +203,13 @@ void Analysis::deletePriorTemporaryFiles()
 //! Deletes posterior files used for temporary files.
 void Analysis::deletePostTemporaryFiles()
 {
+	if(posteriorInputFilePrefix != "") return; //nothing to delete if inputting posteriors
+
 	string rmStrPost = rmStr + outputPostFilename + "*" + endCommand;
 	
+	//do not want to delete *.kin posterior files if we are outputting them
+	if(posteriorOutputFilePrefix != "") rmStrPost = rmStr + outputPostFilename + ".bed " + outputPostFilename + ".bim " + outputPostFilename + ".fam " + outputPostFilename + ".kin0" + endCommand;
+
 	//delete temp files
 	if(!keepTempFiles) system(rmStrPost.c_str());
 };
@@ -261,13 +266,13 @@ void Analysis::runAnalysis()
 			{
 				windowNumber++;
 				if((posteriorStartWindow == 0 || windowNumber >= posteriorStartWindow) && (posteriorEndWindow == 0 || windowNumber <= posteriorEndWindow)) //do selected windows if set
-				{
+				{					
 					calculatePosteriors(windowNumber);
 					fitModels(snpID);
 					snpWindow->recordWindowSize();
 				};
 
-				//cout << "*";
+				//cout << "*";				
 			};
 
 			++calcCount;
@@ -400,7 +405,7 @@ void Analysis::calculatePriors()
 	if(!priorOnly)
 	{
 		//just output the posterior command here once for convience, so is not outputted for every analysis SNP
-		kingCommand = king + " -b tempRIA-posterior-" + pidStr + ".bed --homog --prefix tempRIA-posterior-" + pidStr + endCommand;
+		kingCommand = king + " -b " + outputPostFilename + ".bed --homog --prefix " + outputPostFilename + endCommand;
 
 		out("Calculating posteriors (for each SNP window) using KING command:\n"); out(kingCommand); out("\n\n");
 	};
@@ -420,7 +425,7 @@ void Analysis::outputTrufflePairsFile()
 	readFamilyFile.open(famFilename.c_str());
 	if(!readFamilyFile.is_open())
 	{
-		outErr("Cannot read family file: "); outErr(famFilename); outErr("!\n");
+		outErr("\nCannot read family file: "); outErr(famFilename); outErr("!\n");
 		deleteAllTemporaryFiles();
 		exit(1);
 	};
@@ -562,7 +567,7 @@ void Analysis::calculatePriorsTruffle()
 	if(!priorOnly)
 	{
 		//just output the posterior command here once for convience, so is not outputted for every analysis SNP		
-		truffleCommand = truffle + " --pairs-file " + trufflePairsFilename + " --vcf tempRIA-posterior-" + pidStr + ".vcf.gz " + truffleOptions + " --out tempRIA-posterior-" + pidStr + " " + endCommand;
+		truffleCommand = truffle + " --pairs-file " + trufflePairsFilename + " --vcf " + outputPostFilename + ".vcf.gz " + truffleOptions + " --out " + outputPostFilename + " " + endCommand;
 
 		out("Calculating posteriors (for each SNP window) using TRUFFLE command:\n"); out(truffleCommand); out("\n\n");
 	};
@@ -773,7 +778,7 @@ void Analysis::calculatePosteriors(unsigned int & windowNumber)
 
 		unsigned int kingErrorCode = system(kingCommand.c_str());
 
-		if (kingErrorCode != 0)
+		if(kingErrorCode != 0)
 		{
 			outErr("Problem executing KING (error code "); outErr(kingErrorCode); outErr(") when estimating IBDs with:\n\n ");
 			outErr(kingCommand); outErr("\n\n");
@@ -785,7 +790,7 @@ void Analysis::calculatePosteriors(unsigned int & windowNumber)
 
 	//read in data and store posteriors
 	setupPosteriors(outputPostFilename);
-	if(posteriorOutputFilePrefix == "") deletePostTemporaryFiles();
+	deletePostTemporaryFiles();
 };
 
 //! Calculates the posteriors using IBD calculations given by TRUFFLE.
@@ -1028,7 +1033,7 @@ void Analysis::setupPriors(string & filenameIBD)
 	readKINGIBDs.open(filenameKINGIBDs.c_str());
 	if(!readKINGIBDs.is_open())
 	{
-		outErr("Cannot read KING IBD priors: "); outErr(filenameKINGIBDs); outErr("!\n");
+		outErr("\nCannot read KING IBD priors: "); outErr(filenameKINGIBDs); outErr("!\n");
 
 		deleteAllTemporaryFiles();
 		exit(1);
@@ -1164,7 +1169,7 @@ void Analysis::setupPriorsTruffle(string & filenameIBD)
 	readTruffleIBDs.open(filenameTruffleIBDs.c_str());
 	if(!readTruffleIBDs.is_open())
 	{
-		outErr("Cannot read TRUFFLE IBD priors: "); outErr(filenameTruffleIBDs); outErr("!\n");
+		outErr("\nCannot read TRUFFLE IBD priors: "); outErr(filenameTruffleIBDs); outErr("!\n");
 
 		deleteAllTemporaryFiles();
 		exit(1);
@@ -1248,7 +1253,7 @@ void Analysis::setupPriorsUsingInputFile()
 
 	if(!readPriorFile.is_open())
 	{
-		outErr("Cannot read prior file: "); outErr(priorFilename); outErr("!\n");
+		outErr("\nCannot read prior file: "); outErr(priorFilename); outErr("!\n");
 		deleteAllTemporaryFiles();
 		exit(1);
 	};
@@ -1285,7 +1290,7 @@ void Analysis::setupPriorsUsingInputFile()
 	//just output the posterior command here once for convience, so is not outputted for every analysis SNP
 	if(doTruffle)
 	{
-		string truffleCommand = truffle + " --vcf tempRIA-posterior-" + pidStr + ".vcf.gz " + truffleOptions + " --out tempRIA-posterior-" + pidStr + " " + endCommand;
+		string truffleCommand = truffle + " --vcf " + outputPostFilename + ".vcf.gz " + truffleOptions + " --out" + outputPostFilename + " " + endCommand;
 		out("Calculating posteriors (for each SNP window) using TRUFFLE command:\n"); out(truffleCommand); out("\n\n");
 	}
 	else if(doIbdStitch)
@@ -1295,7 +1300,7 @@ void Analysis::setupPriorsUsingInputFile()
 	}
 	else
 	{
-		string kingCommand = king + " -b tempRIA-posterior-" + pidStr + ".bed --homog --prefix tempRIA-posterior-" + pidStr + endCommand;
+		string kingCommand = king + " -b " + outputPostFilename + ".bed --homog --prefix " + outputPostFilename + " " + endCommand;
 		out("Calculating posteriors (for each SNP window) using KING command:\n"); out(kingCommand); out("\n\n");
 	};
 };
@@ -1311,7 +1316,7 @@ void Analysis::checkKingKinFile(string & filenameIBD)
 	readKINGIBDs.open(filenameKINGIBDs.c_str());
 	if(!readKINGIBDs.is_open())
 	{
-		outErr("Cannot read KING IBD posteriors: "); outErr(filenameKINGIBDs); outErr("!\n");
+		outErr("\nCannot read KING IBD posteriors: "); outErr(filenameKINGIBDs); outErr("!\n");
 
 		deleteAllTemporaryFiles();
 		exit(1);
@@ -1380,19 +1385,17 @@ void Analysis::checkKingKinFile(string & filenameIBD)
 void Analysis::setupPosteriors(string & filenameIBD)
 {
 	checkKingKinFile(filenameIBD);
-
 	string filenameKINGIBDs = filenameIBD + ".kin";
 
 	ifstream readKINGIBDs;
 	readKINGIBDs.open(filenameKINGIBDs.c_str());
 	if(!readKINGIBDs.is_open())
 	{
-		outErr("Cannot read KING IBD posteriors: "); outErr(filenameKINGIBDs); outErr("!\n");
+		outErr("\nCannot read KING IBD posteriors: "); outErr(filenameKINGIBDs); outErr("!\n");
 
 		deleteAllTemporaryFiles();
 		exit(1);
 	};
-
 	string famID, indivID1, indivID2;
 	string prevFamID = "", prevIndivID1 = "", prevIndivID2 = "";
 	unsigned int noSNPs;
@@ -1406,9 +1409,7 @@ void Analysis::setupPosteriors(string & filenameIBD)
 
 	//read in header
 	//readKINGIBDs >> famID >> indivID1 >> indivID2 >> famID >> indivID1 >> indivID2 >> famID >> indivID1 >> indivID2;
-	    
 	for(unsigned int col = 1; col <= noColumns; ++col) readKINGIBDs >> famID;
-
 	//loop thro' priors and set corresponding posterior estimates to zero if prior is zero
 	map<string, IBDData *>::const_iterator pri = priors->snpIBDEstimates.begin();
 
@@ -1500,7 +1501,7 @@ void Analysis::setupPosteriors(string & filenameIBD)
 		prevFamID = famID; prevIndivID1 = indivID1; prevIndivID2 = indivID2;
 		++pri;
 	}while(!readKINGIBDs.eof());
-
+	
 	readKINGIBDs.close();
 };
 
@@ -1513,7 +1514,7 @@ void Analysis::setupPosteriorsTruffle(string & filenameIBD)
 	readTruffleIBDs.open(filenameTruffleIBDs.c_str());
 	if (!readTruffleIBDs.is_open())
 	{
-		outErr("Cannot read TRUFFLE IBD posteriors: "); outErr(filenameTruffleIBDs); outErr("!\n");
+		outErr("\nCannot read TRUFFLE IBD posteriors: "); outErr(filenameTruffleIBDs); outErr("!\n");
 
 		deleteAllTemporaryFiles();
 		exit(1);
@@ -1712,9 +1713,9 @@ void Analysis::fitModels(const unsigned int & snpID)
 
 			paraVarA = modelIBD->getParameter(1);
 			paraVarD = modelIBD->getParameter(2);
-//cout << "1: " << paraVarA << " " << paraVarD << "\n";
+
 			if(fittedOK2) fittedOK = findFit.newtonsMethod(negLog10Alt, parasToFit);
-//cout << "1.5: " << modelIBD->getParameter(1) << " " << modelIBD->getParameter(2) << " " << fittedOK << "\n";
+
 			//if still not fitted, fit accuarily using downhill simplex only
 			if(fittedOK2 && (!fittedOK || modelIBD->getParameter(1) < 0 || modelIBD->getParameter(2) < 0))
 			{
@@ -1724,7 +1725,7 @@ void Analysis::fitModels(const unsigned int & snpID)
 
 				paraVarA = modelIBD->getParameter(1);
 				paraVarD = modelIBD->getParameter(2);
-//cout << "2: " << paraVarA << " " << paraVarD << "\n";
+
 				//try and get a bit more accurate if one parameter is 0
 				if(fittedOK && paraVarD == 0)
 				{
@@ -1738,7 +1739,6 @@ void Analysis::fitModels(const unsigned int & snpID)
 						modelIBD->setParameter(1, 0);
 						modelIBD->setParameter(2, 0);
 						MLS = 0;
-//cout << "3: " << modelIBD->getParameter(1) << " " << modelIBD->getParameter(2) << "\n";
 					}
 					else if(fittedOK2)
 					{
@@ -1762,7 +1762,6 @@ void Analysis::fitModels(const unsigned int & snpID)
 						modelIBD->setParameter(1, 0);
 						modelIBD->setParameter(2, 0);
 						MLS = 0;
-//cout << "4: " << modelIBD->getParameter(1) << " " << modelIBD->getParameter(2) << "\n";
 					}
 					else if(fittedOK2)
 					{
@@ -1788,13 +1787,12 @@ void Analysis::fitModels(const unsigned int & snpID)
 				modelIBD->setParameter(1, 0);
 				modelIBD->setParameter(2, 0);
 				MLS = 0;
-//cout << "5: " << modelIBD->getParameter(1) << " " << modelIBD->getParameter(2) << " " << MLS <<"\n";
 			};
 
 			if(MLS==0) MLS = 0; //this looks pretty pointless? but stops the annoying output "-0"
 			prevVarA = modelIBD->getParameter(1);
 			prevVarD = modelIBD->getParameter(2);
-//cout << "6: " << modelIBD->getParameter(1) << " " << modelIBD->getParameter(2) << " " << MLS <<"\n";
+
 		};
 	
 	};//end of fitting both vars
