@@ -1299,8 +1299,9 @@ void Analysis::setupPriorsUsingInputFile()
 		out("Calculating posteriors (for each SNP window) using ibd_stitch command:\n"); out(ibdStitchCommand); out("\n\n");
 	}
 	else
-	{
+	{	
 		string kingCommand = king + " -b " + outputPostFilename + ".bed --homog --prefix " + outputPostFilename + " " + endCommand;
+		if(posteriorOutputFilePrefix != "") kingCommand = king + " -b " + posteriorOutputFilePrefix + "-WINDOW_NUMBER" + ".bed --homog --prefix " + posteriorOutputFilePrefix + "-WINDOW_NUMBER" + " " + endCommand;
 		out("Calculating posteriors (for each SNP window) using KING command:\n"); out(kingCommand); out("\n\n");
 	};
 };

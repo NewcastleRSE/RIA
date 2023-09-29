@@ -1219,9 +1219,9 @@ void SNPWindow::displayWindowStats()
 	winSD = sqrt(winSD);
 
 	out("\n");
-	out(windowCMSize); out(" cM windows - number of SNPs summary statistics:\n");
+	out(windowCMSize); out(" cM windows (total "); out(windowSizes.size()); out(") - number of SNPs summary statistics : \n");
 	if(windowSizes.size() != 0)
-	{
+	{		
 		out("Mean: "); out(winMean); out("\n");
 		out("Median: "); out(winMedian); out("\n");
 		out("Standard deviation: "); out(winSD); out("\n");
