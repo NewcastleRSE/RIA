@@ -152,7 +152,9 @@ public:
 
 	~SNPWindow()
 	{
-			
+		// if no .bed was used due to priors and posteriors given with no .bed file
+		if (!readSNPData.is_open()) return;
+
 		readSNPData.close();		
 
 		while(!spareSNPs.empty())

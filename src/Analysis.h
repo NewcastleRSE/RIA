@@ -189,7 +189,8 @@ public:
 		delete posteriors;
 	};
 
-	void runAnalysis();	
+	void runAnalysis();
+	void runAnalysisNoSNPFile();
 	void pruneDataForPriorCalc();
 	void calculatePriors();
 	void setupPriors(string & filenameIBD);
@@ -198,8 +199,8 @@ public:
 	void outputTrufflePairsFile();
 	void calculatePosteriors(unsigned int & windowNumber);
 	void setupPosteriors(string & filenameIBD);
-	void setupPosteriorsTruffle(string & filenameIBD);
-	void fitModels(const unsigned int & snpID);
+	void setupPosteriorsTruffle(string & filenameIBD); 
+	void fitModels(const unsigned int & snpID, const bool & windowNum = false);
 	void setupTemporaryFilenames();
 	void deletePriorTemporaryFiles();
 	void deletePostTemporaryFiles();

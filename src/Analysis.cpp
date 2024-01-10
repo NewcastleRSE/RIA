@@ -305,6 +305,31 @@ void Analysis::runAnalysis()
 	if(doTruffle) deletePairsTemporaryFile();
 };
 
+//! Runs the chosen analysis.
+void Analysis::runAnalysisNoSNPFile()
+{
+	resultsFile.open(outputFilename.c_str());
+
+	//output header line for results file
+	resultsFile << "WINDOW VAR_A VAR_D MLS\n";
+
+	//loop thro' all the windows	
+	unsigned int windowNumber = 0;
+
+	while (windowNumber <= posteriorEndWindow)
+	{	
+		//perform analysis for the next window	
+		windowNumber++;
+		if ((posteriorStartWindow == 0 || windowNumber >= posteriorStartWindow) && windowNumber <= posteriorEndWindow) //do selected windows if set
+		{
+			calculatePosteriors(windowNumber);
+			fitModels(windowNumber, true);					
+		};				
+	};
+
+	resultsFile.close();
+};
+
 //! Prunes data using PLINK for use to calculate the prior.
 void Analysis::pruneDataForPriorCalc()
 {
@@ -1298,7 +1323,7 @@ void Analysis::setupPriorsUsingInputFile()
 		string ibdStitchCommand = ibdStitch + " " + "paras" + toString(pid) + ".par" + endCommand;
 		out("Calculating posteriors (for each SNP window) using ibd_stitch command:\n"); out(ibdStitchCommand); out("\n\n");
 	}
-	else
+	else if(filename != "")
 	{	
 		string kingCommand = king + " -b " + outputPostFilename + ".bed --homog --prefix " + outputPostFilename + " " + endCommand;
 		if(posteriorOutputFilePrefix != "") kingCommand = king + " -b " + posteriorOutputFilePrefix + "-WINDOW_NUMBER" + ".bed --homog --prefix " + posteriorOutputFilePrefix + "-WINDOW_NUMBER" + " " + endCommand;
@@ -1634,7 +1659,7 @@ double Analysis::getPvalueChiSq1DF(double & chisq)
 };
 
 //! Fits the model parameters, varA and varD here.
-void Analysis::fitModels(const unsigned int & snpID)
+void Analysis::fitModels(const unsigned int & snpID, const bool & windowNum)
 {
 	FindFit findFit(modelIBD); 	
 
@@ -1798,7 +1823,14 @@ void Analysis::fitModels(const unsigned int & snpID)
 	
 	};//end of fitting both vars
 
-	resultsFile << snpID << " " << snpWindow->getAnalysisChromosome() << " " << snpWindow->getAnalysisSNPName()  << " " << snpWindow->getAnalysisSNPCM() << " " << snpWindow->getAnalysisSNPBP() << " "; 
+	if (windowNum)
+	{
+		resultsFile << snpID << " ";
+	}
+	else
+	{
+		resultsFile << snpID << " " << snpWindow->getAnalysisChromosome() << " " << snpWindow->getAnalysisSNPName() << " " << snpWindow->getAnalysisSNPCM() << " " << snpWindow->getAnalysisSNPBP() << " ";
+	};
 	
 	if(fittedOK)
 	{
