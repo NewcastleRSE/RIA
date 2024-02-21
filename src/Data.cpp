@@ -550,6 +550,8 @@ void SNPWindow::addNextSNPDataToWindow()
 SNPWindow::SNPWindow(string & filename, double & wcMs, unsigned int & wmssnps, unsigned int & wstps, bool & misscm, bool decm, unsigned int & stSNPno, unsigned int & eSNPno, string & stSNPname, string & eSNPname, string & cp, string & rm, string & end, string & pff, const bool & priorsGiven, bool & priorOnly, unsigned int & jobNo, unsigned int & jobTotal, Analysis * an)
 	: geneticDistances(), window(), windowSizes(), windowCMSize(wcMs), missingCMZero(misscm), decreasingCM(decm), windowStepSize(wstps), startSNP(stSNPno), endSNP(eSNPno), analysisSNPNo(1), addingSNPNo(1), newChr(false), validWindow(true), firstCMChr(0), cpStr(cp), rmStr(rm), endCommand(end), postFamFile(pff), analysis(an), startSNPJobNo(0), endSNPJobNo(0), noCalcs(1)
 {	
+	// if the priors and posteriors are both given then we have no SNP or family data
+	if (filename == "") return;
 
 	setupCaseControls(filename, priorsGiven);
 

@@ -77,10 +77,10 @@ void usage()
 		out("  -i-prior file             -- input prior IBDs, file\n");
 		out("  -o-prior file             -- output prior IBDs, file\n");
 		out("  -prior-only               -- calculate prior IBDs only\n");
-		//out("  -i-posteriors-prefix fp   -- input posterior IBDs file prefix, fp\n");
-		//out("  -o-posteriors-prefix fp   -- output posterior IBDs file prefix, fp\n");
-		//out("  -posterior-start-window p -- start analysis from posterior window number p\n");
-		//out("  -posterior-end-window q   -- end analysis at posterior window number q\n");
+		out("  -i-posteriors-prefix fp   -- input posterior IBDs file prefix, fp\n");
+		out("  -o-posteriors-prefix fp   -- output posterior IBDs file prefix, fp\n");
+		out("  -posterior-start-window p -- start analysis from posterior window number p\n");
+		out("  -posterior-end-window q   -- end analysis at posterior window number q\n");
 		out("  -plink command            -- command used to run PLINK\n");
 		out("  -plink-options \"ops\"    -- PLINK pruning options used to calculate the prior\n");
 		out("  -king command             -- command used to run KING\n");
@@ -309,11 +309,24 @@ int main(int argc, char * argv[])
 		logFile.open(logFilename.c_str());	
 	};
 
-	if(filename == "")
-	{	
+	if (filename == "" && (priorFilename == "" || posteriorInputFilePrefix == ""))
+	{
 		usage();
-		if(argc > 1) outErr("\nInput file not set!\n\n");
+		if (argc > 1) outErr("\nInput file not set!\n\n");
 		exit(1);
+	}
+	else if (priorFilename != "" && posteriorInputFilePrefix != "" && filename == "")
+	{
+		if (posteriorEndWindow == 0)
+		{
+			outErr("\nIf the priors and posteriors are both given with no SNP information then the last posterior window number must be given using option \"-posterior-end-window\"!\n\n");
+			exit(1);
+		}
+		else if (jobTotal != 0)
+		{
+			outErr("\nIf the priors and posteriors are both given with no SNP information then the job option cannot be used!\n\n");
+			exit(1);
+		};	
 	};
 
 	if (filename.length() >= 4 && filename.substr(filename.length() - 4) != ".bed")
@@ -325,7 +338,7 @@ int main(int argc, char * argv[])
 		outErr("plink --file mydata --make-bed\n\n");
 		exit(1);
 	}
-	else if (startSNP > endSNP&& endSNP != 0)
+	else if (startSNP > endSNP && endSNP != 0)
 	{
 		outErr("\nThe start SNP must not be after the end SNP!\n\n");
 		exit(1);
@@ -374,7 +387,8 @@ int main(int argc, char * argv[])
 	//output options to screen	
 	header();
 	out("Parameters:\n");
-	out("Input file: "); out(filename); out("\n");
+	if (filename == "") { out("Input file: None\n"); }
+	else { out("Input file: "); out(filename); out("\n"); };
 	if(!priorOnly) {out("Output file: "); out(outputFilename); out("\n");};
 
 	if(priorOnly) out("Calculating prior IBDs only\n");
@@ -393,19 +407,22 @@ int main(int argc, char * argv[])
 		if(noDomVar) out("Using no dominance variance model\n");
 		else {out("Using additive and dominance variance model\n");};
 	
-		if(startSNP != 0) {out("Start at SNP number: "); out(startSNP); out("\n");}
-		else if(startSNPName != "") {out("Start at SNP: "); out(startSNPName); out("\n");}
-		else {out("Start at first SNP with full SNP window\n");}
+		if (filename != "")
+		{
+			if (startSNP != 0) { out("Start at SNP number: "); out(startSNP); out("\n"); }
+			else if (startSNPName != "") { out("Start at SNP: "); out(startSNPName); out("\n"); }
+			else { out("Start at first SNP with full SNP window\n"); }
 
-		if(endSNP != 0) {out("End at SNP number: "); out(endSNP); out("\n");}
-		else if(endSNPName != "") {out("End at SNP: "); out(endSNPName); out("\n");}
-		else {out("End at last SNP with full SNP window\n");}
+			if (endSNP != 0) { out("End at SNP number: "); out(endSNP); out("\n"); }
+			else if (endSNPName != "") { out("End at SNP: "); out(endSNPName); out("\n"); }
+			else { out("End at last SNP with full SNP window\n"); }
 
-		if(jobNo != 0 && jobTotal != 0) {out("Job: "); out(jobNo); out(" of "); out(jobTotal); out("\n"); } 
+			if (jobNo != 0 && jobTotal != 0) { out("Job: "); out(jobNo); out(" of "); out(jobTotal); out("\n"); }
 
-		out("Window size: "); out(windowCMSize); out(" cM\n");
-		out("Minimum number of SNPs in a window: "); out(windowMinSNPSize); out("\n");
-		out("SNP step size: "); out(windowStepSize); out(" SNPs\n");
+			out("Window size: "); out(windowCMSize); out(" cM\n");
+			out("Minimum number of SNPs in a window: "); out(windowMinSNPSize); out("\n");
+			out("SNP step size: "); out(windowStepSize); out(" SNPs\n");
+		};
 	};
 
 	//if(missingCMZero) out("Treating centimorgan values set as 0 as missing\n");
@@ -414,7 +431,11 @@ int main(int argc, char * argv[])
 	//create analysis option and run analysis
 	Analysis anAnalysis(filename, outputFilename, priorFilename, priorOutputFilename, plink, plinkPriorOptions, king, truffle, truffleOptions, gzip, ibdStitch, windowCMSize, missingCMZero, decreasingCM, windowMinSNPSize, windowStepSize, startSNP, endSNP, startSNPName, endSNPName, jobNo, jobTotal, noDomVar, priorOnly, keepTempFiles, posteriorInputFilePrefix, posteriorOutputFilePrefix, posteriorStartWindow, posteriorEndWindow);
 
-	if(!priorOnly) anAnalysis.runAnalysis();	
+	if (!priorOnly)
+	{
+		if (filename == "") anAnalysis.runAnalysisNoSNPFile();
+		else anAnalysis.runAnalysis();
+	};
 
 	time(&end);
 	dif = difftime(end, start);

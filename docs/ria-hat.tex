@@ -81,8 +81,7 @@ The program RIA performs the following steps calling external PLINK and KING whe
 *numlist*
 
 *item*
-The first stage of RIA is the estimation of the IBD sharing probabilities between affected family members using a selection of SNPs across all available SNPs in the data, these probabilities form the *i* priors */i*. The program PLINK *cite* purcell:etal:07 */cite* is used to prune the SNPs to give a representative selection of SNPs using only cases which are then used to estimate the IBD sharing probabilities using KING (version 2.2.9) *cite* manichaikul:etal:10 */cite*. See *ref* ibd-calc */ref* on how the IBD sharing probabilities are estimated.
-
+The first stage of RIA is the estimation of the IBD sharing probabilities between affected family members using a selection of SNPs across all available SNPs in the data, these probabilities form the *i* priors */i*. The program PLINK *cite* purcell:etal:07 */cite* is used to prune the SNPs to give a representative selection of SNPs using only founders. Thus, it should be noted that founders are required in the SNP data. The cases are then used to estimate the IBD sharing probabilities using KING (version 2.2.9) *cite* manichaikul:etal:10 */cite*. See *ref* ibd-calc */ref* on how the IBD sharing probabilities are estimated.
 
 *item*
 The next stage is to step across the genome, set to a default of 50 SNPs per step, and form a SNP window of around 500 to 2000 SNPs and use these SNPs to estimate the IBD sharing probabilities between affected family members using KING (version 2.2.9). These probabilities give the *i* posteriors */i*. See *ref* ibd-calc */ref* on how the IBD sharing probabilities are estimated.
