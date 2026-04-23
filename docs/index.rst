@@ -17,7 +17,16 @@ Please use the menu to the left to navigate through the documentation.
 Citation
 --------
 
+Please use the following conference abstract :cite:`Eu-Ahsunthornwattana:15` to reference the pipeline before a better reference is available:
 
+.. code-block:: none
+
+   @Article{Eu-Ahsunthornwattana:15,
+   author={Eu-Ahsunthornwattana, J and Howey, R and Cordell, H J},
+   title={{Regional IBD Analysis}},
+   journal={TBA},
+   year=2015
+   }
 
 Contents
 --------
@@ -26,7 +35,10 @@ Contents
    :maxdepth: 2  
 
    introduction
-  
+   download
+   using_ria
+   ria_example
+   references
 
 .. _contact:
 
