@@ -1,0 +1,51 @@
+
+/* Increase the main content width */
+.wy-nav-content {
+    max-width: 1000px; /* Adjust this value to your desired width */
+}
+
+/* Fix for bug in theme! */
+.wy-table-responsive table td, .wy-table-responsive table th {
+    white-space: normal;
+}
+
+.wy-table-responsive td:first-child {
+    white-space: nowrap;
+}
+
+/* Table header colour */
+/*
+.wy-table-responsive table th {
+background-color: #884dff;          
+color:#ffffff;
+}
+*/
+
+/* Change the color of the "Table of Contents" heading */
+
+/*
+.caption-text {
+    color: #884dff; 
+}
+*/
+
+/* Replace #3498db with your desired border color */
+/* Optional: adds space between the image and the border */
+/* Ensures the border wraps tightly around the image */
+/* Optional: adds a background color */
+/*
+.custom-figure {
+    border: 2px solid #884dff; 
+    padding: 10px; 
+    display: inline-block; 
+    background-color: #f8f9fa; 
+    width: 700px;    
+}
+*/
+
+/* For images */ 
+/* .align-default {
+    text-align: center;    
+}*/
+
+
