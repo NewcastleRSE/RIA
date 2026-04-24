@@ -7,11 +7,6 @@
 Welcome to the RIA webpage!
 ===========================
 
-The 
-
-|
-|
-
 Please use the menu to the left to navigate through the documentation.
 
 Citation
@@ -35,7 +30,7 @@ Contents
    :maxdepth: 2  
 
    introduction
-  
+   
 
 .. _contact:
 
