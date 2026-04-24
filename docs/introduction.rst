@@ -3,7 +3,7 @@
 Introduction
 ============
 
-The program RIA is a C++ implementation of the method described in :cite:`nat:15` and uses calls to programs `PLINK <https://zzz.bwh.harvard.edu/plink/index.shtml>`_ and `KING <https://www.kingrelatedness.com/history.shtml>`_ version 2.2.9.
+The program RIA is a C++ implementation of the method described in :cite:`nat:15` and uses calls to programs `PLINK <https://www.cog-genomics.org/plink/>`_ and `KING <https://www.kingrelatedness.com/history.shtml>`_ version 2.2.9.
 
 .. _overview:
 
@@ -29,22 +29,22 @@ Estimation of IBD sharing probabilities
 ---------------------------------------
 
 
-`KING <https://www.kingrelatedness.com/history.shtml>`_ version 2.2.9 is used with option `--homog` to estimate the IBD sharing probabilities. Let *IBD2*, *IBD1* and *IBD0* be the probabilities that two individuals share 2, 1 or 0 alleles IBD respectively and *K* the kinship coefficient, then *IBD2*, *IBD1* and *IBD0* are estimated for each SNP as follows:
+`KING <https://www.kingrelatedness.com/history.shtml>`_ version 2.2.9 is used with option `--homog` to estimate the IBD sharing probabilities. Let *IBD*2, *IBD*1 and *IBD*0 be the probabilities that two individuals share 2, 1 or 0 alleles IBD respectively and *K* the kinship coefficient, then *IBD*2, *IBD*1 and *IBD*0 are estimated for each SNP as follows:
 
 
 
-1. KING version 2.2.9 is ran with the `--homog` option which returns estimates of *K* and *IBD0*.
+1. KING version 2.2.9 is ran with the `--homog` option which returns estimates of *K* and *IBD*0.
 
-2. *K* and *IBD0* are truncated to plausible values between 0 to 0.5 and between 0 to 1 respectively if necessary.
+2. *K* and *IBD*0 are truncated to plausible values between 0 to 0.5 and between 0 to 1 respectively if necessary.
 
-3. *IBD2* is estimated as *4K - (1 - IBD0)*.
+3. *IBD*2 is estimated as 4*K* - (1 - *IBD*0).
 
-4. *IBD2* is truncated to a plausible value between 0 to 1 if necessary.
+4. *IBD*2 is truncated to a plausible value between 0 to 1 if necessary.
 
-5. *IBD1* is estimated as *1 - IBD0 - IBD2*.
+5. *IBD*1 is estimated as 1 - *IBD*0 - *IBD*2.
 
-6. *IBD1* is truncated to a plausible value between 0 to 1 if necessary.
+6. *IBD*1 is truncated to a plausible value between 0 to 1 if necessary.
 
-7. For the posterior probabilities only: if any of the priors for *IBD2*, *IBD1* or *IBD0* are equal to zero then the corresponding posterior values are also set to zero. If this results in all IBD probabilities being equal to zero then an error is reported.
+7. For the posterior probabilities only: if any of the priors for *IBD*2, *IBD*1 or *IBD*0 are equal to zero then the corresponding posterior values are also set to zero. If this results in all IBD probabilities being equal to zero then an error is reported.
 
-8. *IBD2*, *IBD1* and *IBD0* are scaled so that *IBD2 + IBD1 + IBD0 = 1* if necessary.
+8. *IBD*2, *IBD*1 and *IBD*0 are scaled so that *IBD*2 + *IBD*1 + *IBD*0 = 1 if necessary.
