@@ -3,5 +3,5 @@
 References
 ==========
 
-.. bibliography:: biblio.bib
+.. bibliography:: web-biblio.bib
    :style: plain

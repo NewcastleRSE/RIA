@@ -12,7 +12,7 @@ Please use the menu to the left to navigate through the documentation.
 Citation
 --------
 
-Please use the following conference abstract :cite:`Eu-Ahsunthornwattana:15` to reference the pipeline before a better reference is available:
+Please use the following conference abstract :cite:`nat:15` to reference the pipeline before a better reference is available:
 
 .. code-block:: none
 
