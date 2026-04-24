@@ -35,10 +35,7 @@ Contents
    :maxdepth: 2  
 
    introduction
-   download
-   using_ria
-   ria_example
-   references
+  
 
 .. _contact:
 
