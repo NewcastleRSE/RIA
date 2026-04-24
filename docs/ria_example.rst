@@ -83,18 +83,18 @@ The results file `resultsRIAExample.dat` should look as follows:
 
 The columns for the results file are as follows:
 
-*tablel*
-*tr* Column & Description */tr*
-*tr* SNP & The SNP number as it appears in file. */tr*
-*tr* CHR & Chromosome of the SNP. */tr*
-*tr* ID & The name of the SNP. */tr*
-*tr* CM & The centimorgan value of the SNP. */tr*
-*tr* BP & The base pair position of the SNP. */tr*
-*tr* *html* VAR_A */html* *tex* VAR\_A */tex* & The additive variance parameter. */tr*
-*tr* *html* VAR_D */html* *tex* VAR\_D */tex* & The dominance variance parameter. */tr*
-*tr* MLS & The maximum-likelihood statistic. */tr*
-*/tablel*
-
++-----------+---------------------------------------+
+| Column    | Description                           |
++===========+=======================================+
+| SNP       | The SNP number as it appears in file. |
+| CHR       | Chromosome of the SNP.                |
+| ID        | The name of the SNP.                  |
+| CM        | The centimorgan value of the SNP.     |
+| BP        | The base pair position of the SNP.    |
+| VAR_A     | The additive variance parameter.      |
+| VAR_D     | The dominance variance parameter.     |
+| MLS       | The maximum-likelihood statistic.     |
++===========+=======================================+
 
 It is not unusual for either `VAR_A` or `VAR_D` or even both of these parameters to be equal to 0. In the example data set `VAR_D` is equal to 0 for most of the SNPs.
 
