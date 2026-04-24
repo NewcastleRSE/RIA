@@ -47,10 +47,10 @@ Typing `ria` with no options will output usage details:
     -o-prior file             -- output prior IBDs, file
     -prior-only               -- calculate prior IBDs only
     -plink command            -- command used to run PLINK
-    -i-posteriors-prefix fp   -- input posterior IBDs file prefix, fp\n");
-    -o-posteriors-prefix fp   -- output posterior IBDs file prefix, fp\n");
-    -posterior-start-window p -- start analysis from posterior window number p\n");
-    -posterior-end-window q   -- end analysis at posterior window number q\n");
+    -i-posteriors-prefix fp   -- input posterior IBDs file prefix
+    -o-posteriors-prefix fp   -- output posterior IBDs file prefix
+    -posterior-start-window p -- start analysis from posterior window number p
+    -posterior-end-window q   -- end analysis at posterior window number q
     -plink-options "ops"      -- PLINK pruning options used to calculate the prior
     -king command             -- command used to run KING
     -log results.log          -- log filename, results.log

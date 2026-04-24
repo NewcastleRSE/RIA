@@ -3,7 +3,7 @@
 Introduction
 ============
 
-The program RIA is a C++ implementation of the method described in :cite:`nat:15` and uses calls to programs `PLINK <a href="https://zzz.bwh.harvard.edu/plink/index.shtml">`_ and `KING <a href="https://www.kingrelatedness.com/history.shtml">`_ version 2.2.9.
+The program RIA is a C++ implementation of the method described in :cite:`nat:15` and uses calls to programs `PLINK <https://zzz.bwh.harvard.edu/plink/index.shtml>`_ and `KING <https://www.kingrelatedness.com/history.shtml>`_ version 2.2.9.
 
 .. _overview:
 
@@ -29,7 +29,7 @@ Estimation of IBD sharing probabilities
 ---------------------------------------
 
 
-`KING <a href="https://www.kingrelatedness.com/history.shtml">`_ version 2.2.9 is used with option `--homog` to estimate the IBD sharing probabilities. Let *IBD2*, *IBD1* and *IBD0* be the probabilities that two individuals share 2, 1 or 0 alleles IBD respectively and *K* the kinship coefficient, then *IBD2*, *IBD1* and *IBD0* are estimated for each SNP as follows:
+`KING <https://www.kingrelatedness.com/history.shtml>`_ version 2.2.9 is used with option `--homog` to estimate the IBD sharing probabilities. Let *IBD2*, *IBD1* and *IBD0* be the probabilities that two individuals share 2, 1 or 0 alleles IBD respectively and *K* the kinship coefficient, then *IBD2*, *IBD1* and *IBD0* are estimated for each SNP as follows:
 
 
 
