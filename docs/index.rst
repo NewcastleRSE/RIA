@@ -2,8 +2,6 @@
 
 .. code-block:: none
 
-🚧 **Work in Progress** 🚧 This website is under active development.
-
 Welcome to the RIA webpage!
 ===========================
 
@@ -30,7 +28,10 @@ Contents
    :maxdepth: 2  
 
    introduction
-   
+   download
+   using_ria
+   ria_example
+   references
 
 .. _contact:
 
