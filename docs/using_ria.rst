@@ -175,4 +175,6 @@ As an alternative to calculating the priors and posteriors they may be supplied 
     ../ria -king /path/to/king/king -plink /path/to/plink/plink -i-prior prior3.dat -i-posteriors-prefix posteriors-data3/post -o resultsRIAExampleData3-5.dat -log results3-5.log -posterior-start-window 10 -posterior-end-window 20
 
 
+**Note:** If the priors and posteriors are both given with no .bed file then the last posterior window number must be given using option "-posterior-end-window".
+
 
