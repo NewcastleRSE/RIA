@@ -5,13 +5,13 @@ RIA Example
 
 This section runs through an example analysis using RIA with example data which can be download from `here <https://github.com/NewcastleRSE/RIA/blob/main/docs/exampleRIAData.zip>`_. This data was simulated using HAPMAP3 data to mate individuals who already had children to create 301 affected relative pairs (ARPs). The data only contains SNPs from chromosome 6, however in a real analysis we would ideally have data for the whole genome to get better estimates of the prior IBD sharing probabilities and to compare LOD scores across the genome.
 
-We already have PLINK installed on our system so we will not bother ourselves to download it from `here <https://www.cog-genomics.org/plink/>`_, nor will we use the `-plink` option as it is already set up to run by typing "plink", which is set by default. The KING program (version 2.2.9) on the other hand is not installed, so we shall download it from `here <https://www.kingrelatedness.com/history.shtml>`_, and save the executable file at location `/home/me/my-programs/king/` so that KING may be ran by typing `/home/me/my-programs/king/king`. **Note:** It is very important to download KING version 2.2.9 and not any later versions as we need to use the `--homog` option which is no longer available in later versions.
+We already have PLINK installed on our system so we will not bother ourselves to download it from `here <https://www.cog-genomics.org/plink/>`_, nor will we use the `-plink` option as it is already set up to run by typing "plink", which is set by default. The KING program (version 2.2.9) on the other hand is not installed, so we shall download it from `here <https://www.kingrelatedness.com/history.shtml>`_, and save the executable file at location `/path/to/king/` so that KING may be ran by typing `/path/to/king/king`. **Note:** It is very important to download KING version 2.2.9 and not any later versions as we need to use the `--homog` option which is no longer available in later versions.
 
 We can now run a Regional IBD Analysis (RIA) analyses using the default options for the SNP window size, set to 15 cM, and the SNP window step size, set to 50, by typing:
 
 .. code-block:: none
 
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample.dat
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o resultsRIAExample.dat
 
 This will create output similar to the following.
 
@@ -43,12 +43,12 @@ This will create output similar to the following.
     plink --noweb --bfile exampleRIAData --filter-cases --extract tempRIA-priors1-8553.prune.in --make-bed --out tempRIA-priors2-8553 >/dev/null 2>&1
 
     Calculating priors using KING command:
-    /home/me/my-programs/king/king -b tempRIA-priors2-8553.bed --homog --prefix tempRIA-priors2-8553 >/dev/null 2>&1
+    /path/to/king/king -b tempRIA-priors2-8553.bed --homog --prefix tempRIA-priors2-8553 >/dev/null 2>&1
 
     Number of affected relative pairs (ARPs) in priors: 301
 
     Calculating posteriors (for each SNP window) using KING command:
-    /home/me/my-programs/king/king -b tempRIA-posterior-8553.bed --homog --prefix tempRIA-posterior-8553 >/dev/null 2>&1
+    /path/to/king/king -b tempRIA-posterior-8553.bed --homog --prefix tempRIA-posterior-8553 >/dev/null 2>&1
 
     15 cM windows - number of SNPs summary statistics:
     Mean: 2442.33
@@ -125,7 +125,7 @@ As the prior IBD sharing probabilities are always the same, regardless of which 
 
 .. code-block:: none
 
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample.dat -o-prior examplePrior.dat
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o resultsRIAExample.dat -o-prior examplePrior.dat
 
 
 
@@ -134,7 +134,7 @@ or can be done without any further analysis using the `-prior-only` option as fo
 
 .. code-block:: none
 
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -prior-only -o-prior examplePrior.dat
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -prior-only -o-prior examplePrior.dat
 
 
 
@@ -143,7 +143,7 @@ The prior can then be used for different analysis using the `-i-prior` option, s
 
 .. code-block:: none
 
-    ./ria -window-size 2000 -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample-2000.dat -i-prior examplePrior.dat
+    ./ria -window-size 2000 -king /path/to/king/king -i exampleRIAData.bed -o resultsRIAExample-2000.dat -i-prior examplePrior.dat
 
 
 
@@ -163,7 +163,7 @@ Regional IBD Analysis is fairly computationally intensive and so it is natural t
 
 .. code-block:: none
 
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o resultsRIAExample1.dat -i-prior examplePrior.dat -start-snp 3000 -end-snp 4000
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o resultsRIAExample1.dat -i-prior examplePrior.dat -start-snp 3000 -end-snp 4000
 
 
 
@@ -176,16 +176,16 @@ If all of the data is to be analysed it is much easy to use the `-job` option to
 
 .. code-block:: none
         
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results1.dat -i-prior examplePrior.dat -job 1 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results2.dat -i-prior examplePrior.dat -job 2 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results3.dat -i-prior examplePrior.dat -job 3 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results4.dat -i-prior examplePrior.dat -job 4 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results5.dat -i-prior examplePrior.dat -job 5 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results6.dat -i-prior examplePrior.dat -job 6 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results7.dat -i-prior examplePrior.dat -job 7 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results8.dat -i-prior examplePrior.dat -job 8 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results9.dat -i-prior examplePrior.dat -job 9 10
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results10.dat -i-prior examplePrior.dat -job 10 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results1.dat -i-prior examplePrior.dat -job 1 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results2.dat -i-prior examplePrior.dat -job 2 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results3.dat -i-prior examplePrior.dat -job 3 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results4.dat -i-prior examplePrior.dat -job 4 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results5.dat -i-prior examplePrior.dat -job 5 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results6.dat -i-prior examplePrior.dat -job 6 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results7.dat -i-prior examplePrior.dat -job 7 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results8.dat -i-prior examplePrior.dat -job 8 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results9.dat -i-prior examplePrior.dat -job 9 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results10.dat -i-prior examplePrior.dat -job 10 10
 
 
 
@@ -212,6 +212,6 @@ The `-job` option makes it easy to write a simple script with a loop to submit t
     # the number of RIA tasks
     #$ -t 1-10
     # execute RIA for each task
-    ./ria -king /home/me/my-programs/king/king -i exampleRIAData.bed -o results$SGE_TASK_ID.dat -i-prior examplePrior.dat -job $SGE_TASK_ID 10
+    ./ria -king /path/to/king/king -i exampleRIAData.bed -o results$SGE_TASK_ID.dat -i-prior examplePrior.dat -job $SGE_TASK_ID 10
 
 

@@ -1,9 +1,7 @@
 .. Created 15/01/2026
 
-.. code-block:: none
-
-Welcome to the RIA webpage!
-===========================
+Welcome to the RIA (Regional IBD Analysis) webpage!
+===================================================
 
 Please use the menu to the left to navigate through the documentation.
 

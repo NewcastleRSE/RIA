@@ -14,7 +14,7 @@ The most likely options that will need to be used are how to run the programs PL
 
 .. code-block:: none
 
-    ./ria -plink /home/me/my-programs/plink/plink -king /home/me/my-programs/king/king -i mydata.bed
+    ./ria -plink /path/to/plink/plink -king /path/to/king/king -i mydata.bed
 
 
 Typing `ria` with no options will output usage details:
@@ -85,8 +85,8 @@ The parameter file should be a text file with one option written on each line. F
 
 .. code-block:: none
 
-    -plink /home/me/my-programs/plink/plink
-    -king /home/me/my-programs/king/king mydata.bed
+    -plink /path/to/plink/plink
+    -king /path/to/king/king mydata.bed
     -window-size-cm 15
     -step-size 50
     -i mydata.bed
@@ -99,10 +99,10 @@ It is also possible to add comments to the file provided that the "-" character 
 .. code-block:: none
 
     # Command used to run PLINK
-    -plink /home/me/my-programs/plink/plink
+    -plink /path/to/plink/plink
 
     # Command used to run KING
-    -king /home/me/my-programs/king/king
+    -king /path/to/king/king
 
     # SNP window size
     -window-size-cm 15
@@ -143,4 +143,36 @@ RIA requires the use of two other programs, PLINK and KING, and in order to use 
 
 
 The use of the process ID ensures that several RIA jobs may be ran in the same location without any issues of interference. All of these temporary files should be deleted by RIA when they are no longer needed, however if RIA is forced to unexpectedly stop for some reason then these files may still be lying around. In which case, they should be carefully deleted if necessary.
+
+Using Prior and Posterior Files
+-------------------------------
+
+As an alternative to calculating the priors and posteriors they may be supplied to RIA if they have been calculated and saved in advance. The following bash shell script has example commands on how to do this. 
+
+.. code-block:: none
+
+    #!/bin/bash
+
+    # There are lots of posterior files, so save them in their own directory
+    mkdir posteriors-data3
+
+    # Run on example data and save prior
+    ../ria -king /path/to/king/king -plink /path/to/plink/plink -i ../demo-data/exampleRIAData.bed -prior-only -o-prior prior3.dat -log results-prior3.log
+
+    # Run on example data with calculated prior and save posteriors
+    ../ria -king /path/to/king/king -plink /path/to/plink/plink -i ../demo-data/exampleRIAData.bed -i-prior prior3.dat -o-posteriors-prefix posteriors-data3/post -o resultsRIAExampleData3-1.dat -log results3-1.log
+
+    # Run on example data using calculated prior and posteriors
+    ../ria -king /path/to/king/king -plink /path/to/plink/plink -i ../demo-data/exampleRIAData.bed -i-prior prior3.dat -i-posteriors-prefix posteriors-data3/post -o resultsRIAExampleData3-2.dat -log results3-2.log
+
+    # Run on example data using calculated prior and posteriors using a window
+    ../ria -king /path/to/king/king -plink /path/to/plink/plink -i ../demo-data/exampleRIAData.bed -i-prior prior3.dat -i-posteriors-prefix posteriors-data3/post -o resultsRIAExampleData3-3.dat -log results3-3.log -posterior-start-window 10 -posterior-end-window 20
+
+    # Run on example data using calculated prior and posteriors, no .bed file and with end posteriors window
+    ../ria -king /path/to/king/king -plink /path/to/plink/plink -i-prior prior3.dat -i-posteriors-prefix posteriors-data3/post -o resultsRIAExampleData3-4.dat -log results3-4.log -posterior-end-window 557
+
+    # Run on example data using calculated prior and posteriors, no .bed file and with start and end posteriors window
+    ../ria -king /path/to/king/king -plink /path/to/plink/plink -i-prior prior3.dat -i-posteriors-prefix posteriors-data3/post -o resultsRIAExampleData3-5.dat -log results3-5.log -posterior-start-window 10 -posterior-end-window 20
+
+
 

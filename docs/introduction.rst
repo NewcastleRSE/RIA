@@ -3,7 +3,7 @@
 Introduction
 ============
 
-The program RIA is a C++ implementation of the method described in :cite:`nat:15` and uses calls to programs `PLINK <https://www.cog-genomics.org/plink/>`_ and `KING <https://www.kingrelatedness.com/history.shtml>`_ version 2.2.9.
+The program RIA (Regional IBD Analysis) is a C++ implementation of the method described in :cite:`nat:15` and uses calls to programs `PLINK <https://www.cog-genomics.org/plink/>`_ and `KING <https://www.kingrelatedness.com/history.shtml>`_ version 2.2.9.
 
 .. _overview:
 
