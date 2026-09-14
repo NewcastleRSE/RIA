@@ -1,5 +1,5 @@
 /************************************************************************
- * RIA, version 1.1
+ * RIA, version 1.1.1
  * Copyright 2015-present
  * Richard Howey
  * Research Software Engineering, Newcastle University
@@ -47,7 +47,7 @@ ofstream logFile;
 //! Output program title to screen
 void header()
 {
-	out("\nRIA: Regional IBD Analysis, v1.1\n");
+	out("\nRIA: Regional IBD Analysis, v1.1.1\n");
 	out("------------------------------------------------------------\n");
 	out("Copyright 2015-present Richard Howey, GNU General Public License, v3\n");
 	out("Research Software Engineering, Newcastle University\n\n");

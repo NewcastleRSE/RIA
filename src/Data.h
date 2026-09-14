@@ -1,5 +1,5 @@
 /************************************************************************
- * RIA, version 1.1
+ * RIA, version 1.1.1
  * Copyright 2015-present
  * Richard Howey
  * Research Software Engineering, Newcastle University
