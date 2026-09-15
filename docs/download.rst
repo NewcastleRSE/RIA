@@ -3,7 +3,7 @@
 Installation
 ============
 
-Download an executable file from the `executables <https://github.com/NewcastleRSE/RIA/tree/main/executables>`_ folder on Github for your system and off you go, or do the following.
+Download an executable file from the Github `releases <https://github.com/NewcastleRSE/RIA/releases>`_ webpage and off you go, or do the following.
 
 |
 
